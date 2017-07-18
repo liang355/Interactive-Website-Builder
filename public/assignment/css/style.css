@@ -4,6 +4,26 @@ body {
     margin-bottom: 60px;
 }
 
+#left-chevron {
+    margin-left: 0px;
+}
+
+#hidden-left-chevron {
+    margin-left: 0px;
+}
+
+#plus-sign {
+    margin-right: 30px;
+}
+
+#bottom-navbar-row {
+    text-align: center; width: 100%;
+}
+
+#bottom-user-icon {
+    margin-right: 15px;
+}
+
 #websiteListArea {
     overflow-y: scroll;
     top: 0;
