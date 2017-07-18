@@ -9,48 +9,47 @@
 <body>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                Fixed Top
-            </a>
-            <p class="navbar-text pull-right">
-                <a href="#" class="navbar-link">
-          <span class="glyphicon glyphicon-plus">
-          </span>
+    <div class="row container-fluid">
+        <div class="col-xs-12 col-sm-12">
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" id="navbar-brand-text" href="#">
+                    Profile
                 </a>
-            </p>
+            </div>
+            <div class="navbar-text pull-right" id="ok-sign">
+                <a href="#">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
         </div>
     </div>
 </nav>
 
-    <div class="container">
-        <h1>Profile</h1>
+<div class="container-fluid">
+    <form>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="alice@wonderland.com">
+        </div>
+        <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" class="form-control" id="first-name" placeholder="Alice">
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" class="form-control" id="last-name" placeholder="Wonderland">
+        </div>
+    </form>
 
-        <form>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="alice@wonderland.com">
-            </div>
-            <div class="form-group">
-                <label for="first-name">First Name</label>
-                <input type="text" class="form-control" id="first-name" placeholder="Alice">
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last Name</label>
-                <input type="text" class="form-control" id="last-name" placeholder="Wonderland">
-            </div>
-        </form>
-
-        <a class="btn btn-primary btn-block"
-           href="website-list.html">Websites</a>
-        <a class="btn btn-danger  btn-block"
-           href="login.html">Logout</a>
-    </div>
+    <a class="btn btn-primary btn-block"
+       href="website-list.html">Websites</a>
+    <a class="btn btn-danger  btn-block"
+       href="login.html">Logout</a>
+</div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">

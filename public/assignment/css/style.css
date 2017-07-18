@@ -12,7 +12,15 @@ body {
     margin-left: 0px;
 }
 
+#navbar-brand-text {
+    margin-left: 0px;
+}
+
 #plus-sign {
+    margin-right: 30px;
+}
+
+#ok-sign {
     margin-right: 30px;
 }
 

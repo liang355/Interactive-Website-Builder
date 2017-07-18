@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Page</title>
+    <title>Edit Header</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -17,12 +17,12 @@
             </div>
             <div class="navbar-header pull-left">
                 <a class="navbar-brand" href="#">
-                    Edit Page
+                    Widget Edit
                 </a>
             </div>
             <div class="navbar-text pull-right" id="plus-sign">
                 <a href="#">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </div>
         </div>
@@ -33,12 +33,16 @@
     <div class="col-xs-12 col-sm-12">
         <form>
             <div class="form-group">
-                <label for="pageName">Name</label>
-                <input type="text" id="pageName" class="form-control" placeholder="Page Name">
+                <label for="headerName">Name</label>
+                <input type="text" id="headerName" class="form-control" placeholder="Header Name">
             </div>
             <div class="form-group">
-                <label for="pageTitle">Title</label>
-                <input type="text" id="pageTitle" class="form-control" placeholder="Page Title">
+                <label for="headerText">Text</label>
+                <input type="text" id="headerText" class="form-control" placeholder="Header Text">
+            </div>
+            <div class="form-group">
+                <label for="headerSize">Text</label>
+                <input type="number" id="headerSize" class="form-control" placeholder="Header Size">
             </div>
             <a href="#" class="btn btn-danger btn-block">Delete</a>
         </form>
@@ -56,6 +60,5 @@
         </div>
     </div>
 </nav>
-
 </body>
 </html>
