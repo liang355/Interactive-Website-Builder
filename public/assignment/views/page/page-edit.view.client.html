@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Page</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/style.css" rel="stylesheet"/>
-</head>
-<body>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="row container-fluid">
         <div class="col-xs-12 col-sm-12">
             <div class="navbar-text pull-left" id="left-chevron">
-                <a href="page-list.html">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
@@ -21,7 +12,7 @@
                 </a>
             </div>
             <div class="navbar-text pull-right" id="plus-sign">
-                <a href="page-list.html">
+                <a ng-click="model.updatePage()">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
@@ -31,16 +22,17 @@
 
 <div class="row container-fluid">
     <div class="col-xs-12 col-sm-12">
+        <div ng-show="model.error" class="alert alert-danger" role="alert">{{model.error}}</div>
         <form>
             <div class="form-group">
                 <label for="pageName">Name</label>
-                <input type="text" id="pageName" class="form-control" placeholder="Page Name">
+                <input ng-model="model.name" type="text" id="pageName" class="form-control" placeholder="Page Name">
             </div>
             <div class="form-group">
                 <label for="pageTitle">Title</label>
-                <input type="text" id="pageTitle" class="form-control" placeholder="Page Title">
+                <input ng-model="model.description" type="text" id="pageTitle" class="form-control" placeholder="Page Description">
             </div>
-            <a href="page-list.html" class="btn btn-danger btn-block">Delete</a>
+            <a ng-click="model.deletePage()" class="btn btn-danger btn-block">Delete</a>
         </form>
     </div>
 </div>
@@ -49,13 +41,10 @@
     <div class="container-fluid">
         <div class="navbar-text row" id="bottom-navbar-row">
             <div class="col-xs-12">
-                <a href="profile.html" class="pull-right" id="bottom-user-icon">
+                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
                     <span class="glyphicon glyphicon-user"></span>
                 </a>
             </div>
         </div>
     </div>
 </nav>
-
-</body>
-</html>

@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-xs-12">
+            <div class="navbar-text pull-left" id="left-chevron">
+                <a href="#!/user/{{model.uid}}">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" href="">
+                    Websites
+                </a>
+            </div>
+            <div class="navbar-text pull-right" id="plus-sign">
+                <a href="#!/user/{{model.uid}}/website/new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="row container-fluid">
+    <div class="col-xs-12 col-sm-12" id="websiteListArea">
+        <ul class="list-group">
+            <li ng-repeat="website in model.websites" class="list-group-item">
+                <a href="#!/user/{{website.developerId}}/website/{{website._id}}/page">{{website.name}}</a>
+                <a href="#!/user/{{website.developerId}}/website/{{website._id}}">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text row" id="bottom-navbar-row">
+            <div class="col-xs-12">
+                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

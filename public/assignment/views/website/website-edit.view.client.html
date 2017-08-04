@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>New Website</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/style.css" rel="stylesheet"/>
-</head>
-<body>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="row container-fluid">
         <div class="hidden-xs col-sm-4">
             <div class="navbar-text pull-left" id="left-chevron">
-                <a href="website-list.html">
+                <a href="#!/user/{{model.uid}}/website">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
@@ -28,17 +19,17 @@
         </div>
         <div class="col-xs-12 col-sm-8">
             <div class="navbar-text pull-left visible-xs" id="hidden-left-chevron">
-                <a href="website-list.html">
+                <a href="#!/user/{{model.uid}}/website">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
             <div class="navbar-header pull-left">
                 <a class="navbar-brand" href="#">
-                    New Website
+                    Edit Website
                 </a>
             </div>
             <div class="navbar-text pull-right">
-                <a href="website-list.html">
+                <a ng-click="model.updateWebsite()">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
@@ -49,23 +40,9 @@
 <div class="row container-fluid">
     <div class="hidden-xs col-sm-4" id="websiteListArea">
         <ul class="list-group">
-            <li class="list-group-item">Address Book App
-                <a href="#">
-                    <span class="glyphicon glyphicon-cog pull-right"></span>
-                </a>
-            </li>
-            <li class="list-group-item">Blogger
-                <a href="#">
-                    <span class="glyphicon glyphicon-cog pull-right"></span>
-                </a>
-            </li>
-            <li class="list-group-item">Blogging App
-                <a href="#">
-                    <span class="glyphicon glyphicon-cog pull-right"></span>
-                </a>
-            </li>
-            <li class="list-group-item">Script Testing App
-                <a href="#">
+            <li ng-repeat="website in model.websites" class="list-group-item">
+                <a href="#!/user/{{website.developerId}}/website/{{website._id}}/page">{{website.name}}</a>
+                <a href="#!/user/{{website.developerId}}/website/{{website._id}}">
                     <span class="glyphicon glyphicon-cog pull-right"></span>
                 </a>
             </li>
@@ -74,14 +51,16 @@
 
     <div class="col-xs-12 col-sm-8 pull-right">
         <form>
+            <div ng-show="model.error" class="alert alert-danger" role="alert">{{model.error}}</div>
             <div class="form-group">
-                <label for="textInput">Name</label>
-                <input type="text" id="textInput" class="form-control" placeholder="Name">
+                <label for="textInput">Website Name</label>
+                <input ng-model="model.websiteName" type="text" id="textInput" class="form-control" placeholder="Website Name">
             </div>
             <div class="form-group">
-                <label for="textArea">Description</label>
-                <textarea id="textArea" class="form-control" rows="6" placeholder="Description"></textarea>
+                <label for="textArea">Website Description</label>
+                <textarea ng-model="model.websiteDescription" id="textArea" class="form-control" rows="6" placeholder="Website Description"></textarea>
             </div>
+            <a ng-click="model.deleteWebsite()" class="btn btn-danger btn-block">Delete</a>
         </form>
     </div>
 </div>
@@ -90,13 +69,10 @@
     <div class="container-fluid">
         <div class="navbar-text row" id="bottom-navbar-row">
             <div class="col-xs-12">
-                <a href="profile.html" class="pull-right" id="bottom-user-icon">
+                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
                     <span class="glyphicon glyphicon-user"></span>
                 </a>
             </div>
         </div>
     </div>
 </nav>
-
-</body>
-</html>

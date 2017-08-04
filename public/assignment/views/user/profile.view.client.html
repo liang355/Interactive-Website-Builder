@@ -1,0 +1,55 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-xs-12 col-sm-12">
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" id="navbar-brand-text-top" href="">
+                    Profile
+                </a>
+            </div>
+            <div class="navbar-text pull-right" id="ok-sign">
+                <a ng-click="model.updateUser()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div ng-show="model.updated" class="alert alert-success" role="alert">{{model.updated}}</div>
+    <form>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input ng-model="model.username" type="text" class="form-control" id="username" placeholder="Username" disabled="disabled">
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input ng-model="model.email" type="email" class="form-control" id="email" placeholder="alice@wonderland.com">
+        </div>
+        <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input ng-model="model.firstName" type="text" class="form-control" id="first-name" placeholder="first name">
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input ng-model="model.lastName" type="text" class="form-control" id="last-name" placeholder="last name">
+        </div>
+    </form>
+
+    <a class="btn btn-primary btn-block"
+       href="#!/user/{{model.user._id}}/website">Websites</a>
+    <a class="btn btn-danger btn-block"
+       href="#!/login">Logout</a>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text row" id="bottom-navbar-row">
+            <div class="col-xs-12">
+                <a href="#!/user/{{model.user._id}}" class="pull-right" id="bottom-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
