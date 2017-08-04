@@ -5,9 +5,9 @@
 
     function configuration($routeProvider) {
         $routeProvider
-            // .when('/', {
-            //     redirectTo : "/login"
-            // })
+            .when('/', {
+                redirectTo : "/login"
+            })
             .when('/register', {
                 templateUrl : "views/user/register.view.client.html",
                 controller: "RegisterController",
@@ -73,8 +73,8 @@
                 controller: "EditWidgetController",
                 controllerAs: "model"
             })
-            // .otherwise({
-            //     redirectTo : "/"
-            // });
+            .otherwise({
+                redirectTo : "/"
+            });
     }
 })();
