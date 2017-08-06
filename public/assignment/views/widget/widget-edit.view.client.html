@@ -7,12 +7,12 @@
                 </a>
             </div>
             <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="">
                     Widget Edit
                 </a>
             </div>
             <div class="navbar-text pull-right" id="ok-sign">
-                <a href="#!/widget-list.view.client">
+                <a ng-click="model.updateWidget()">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
@@ -22,21 +22,21 @@
 
 <div class="row container-fluid">
     <div class="col-xs-12 col-sm-12">
-        <form>
-            <div class="form-group">
-                <label for="headerName">Name</label>
-                <input type="text" id="headerName" class="form-control" placeholder="Header Name">
+        <div ng-show="model.updateError" class="alert alert-danger" role="alert">{{model.updateError}}</div>
+        <div ng-switch="model.widget.widgetType">
+            <div ng-switch-when="HEADING">
+                <div ng-include="'views/widget/heading/widget-heading-edit.view.client.html'"></div>
             </div>
-            <div class="form-group">
-                <label for="headerText">Text</label>
-                <input type="text" id="headerText" class="form-control" placeholder="Header Text">
+            <div ng-switch-when="IMAGE">
+                <div ng-include="'views/widget/image/widget-image-edit.view.client.html'"></div>
             </div>
-            <div class="form-group">
-                <label for="headerSize">Text</label>
-                <input type="number" id="headerSize" class="form-control" placeholder="Header Size">
+            <div ng-switch-when="YOUTUBE">
+                <div ng-include="'views/widget/youtube/widget-youtube-edit.view.client.html'"></div>
             </div>
-            <a href="#!/widget-list.view.client" class="btn btn-danger btn-block">Delete</a>
-        </form>
+            <div ng-switch-when="HTML">
+                <div ng-include="'views/widget/html/widget-html-edit.view.client.html'"></div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -12,15 +12,15 @@
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
         vm.widgets = WidgetService.findWidgetsByPageId(vm.pid);
+        console.log(vm.widgets);
     }
 
-    function NewWidgetController($routeParams, $timeout, WidgetService) {
+    function NewWidgetController($routeParams, WidgetService) {
         var vm = this;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
         vm.widgets = WidgetService.findWidgetsByPageId(vm.pid);
-        vm.futureFeature = futureFeature;
         vm.featureMissingAlert = null;
     }
 
@@ -32,17 +32,22 @@
         vm.widgetType = $routeParams.wtype;
         vm.createWidget = createWidget;
         vm.createError = null;
+        console.log(vm.widgetSize);
 
         function createWidget() {
             if (vm.widgetType === 'IMAGE' || vm.widgetType === 'YOUTUBE') {
-                if (vm.widgetUrl === null || vm.widgetUrl === undefined) {
+                if (vm.widgetUrl === null || vm.widgetUrl === undefined || vm.widgetUrl === "") {
                     vm.createError = "Url is required for Image/Youtube";
                     return;
                 }
             }
-            if (vm.widgetType === 'HEADER') {
-                if (vm.widgetText === null || vm.widgetText === undefined) {
-                    vm.createError = "Text is required for Header";
+            if (vm.widgetType === 'HEADING') {
+                if (vm.widgetText === null || vm.widgetText === undefined || vm.widgetText === "") {
+                    vm.createError = "Text is required for Heading";
+                    return;
+                }
+                if (vm.widgetSize !== undefined && (vm.widgetSize < 1 || vm.widgetSize > 6)) {
+                    vm.createError = "Heading size is invalid, value must be between 1 and 6";
                     return;
                 }
             }
@@ -66,10 +71,10 @@
         vm.pid = $routeParams.pid;
         vm.wgid = $routeParams.wgid;
         vm.widget = WidgetService.findWidgetById(vm.wgid);
-        vm.editWidget = editWidget;
+        vm.updateWidget = updateWidget;
         vm.deleteWidget = deleteWidget;
 
-        if (vm.widget.widgetType === "HEADER") {
+        if (vm.widget.widgetType === "HEADING") {
             vm.widgetName = vm.widget.name;
             vm.widgetText = vm.widget.text;
             vm.widgetSize = vm.widget.size;
@@ -83,9 +88,28 @@
             vm.widgetText = vm.widget.text;
             vm.widgetUrl = vm.widget.url;
             vm.widgetWidth = vm.widget.width;
+        } else if (vm.widget.widgetType === "HTML") {
+            vm.widgetName = vm.widget.name;
+            vm.widgetText = vm.widget.text;
         }
 
-        function editWidget() {
+        function updateWidget() {
+            if (vm.widget.widgetType === 'IMAGE' || vm.widget.widgetType === 'YOUTUBE') {
+                if (vm.widgetUrl === null || vm.widgetUrl === undefined || vm.widgetUrl === "") {
+                    vm.updateError = "Url is required for Image/Youtube";
+                    return;
+                }
+            }
+            if (vm.widget.widgetType === 'HEADING') {
+                if (vm.widgetText === null || vm.widgetText === undefined || vm.widgetText === "") {
+                    vm.updateError = "Text is required for Heading";
+                    return;
+                }
+                if (vm.widgetSize !== null && (vm.widgetSize < 1 || vm.widgetSize > 6)) {
+                    vm.updateError = "Heading size is invalid, value must be between 1 and 6";
+                    return;
+                }
+            }
             var latestData = {
                 name: vm.widgetName,
                 text: vm.widgetText,

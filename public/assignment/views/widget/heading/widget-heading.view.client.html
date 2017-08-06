@@ -1,4 +1,11 @@
-<h1>{{widget.text}}</h1>
+<h1 ng-show="widget.size === undefined || widget.size === null">{{widget.text}}</h1>
+<h1 ng-show="widget.size === 1">{{widget.text}}</h1>
+<h2 ng-show="widget.size === 2">{{widget.text}}</h2>
+<h3 ng-show="widget.size === 3">{{widget.text}}</h3>
+<h4 ng-show="widget.size === 4">{{widget.text}}</h4>
+<h5 ng-show="widget.size === 5">{{widget.text}}</h5>
+<h6 ng-show="widget.size === 6">{{widget.text}}</h6>
+
 <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/{{widget._id}}">
 <span class="glyphicon glyphicon-cog overlay-pull-right"></span>
 </a>

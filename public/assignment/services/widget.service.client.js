@@ -5,19 +5,19 @@
 
     function widgetService() {
         var widgets = [
-            { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "text": "GIZMODO Heading"},
-            { "_id": "234", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Heading1"},
-            { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%",
+            { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "name": "Grizzy", "text": "GIZMODO Heading"},
+            { "_id": "234", "widgetType": "HEADING", "pageId": "321", "size": 4, "name": "Head1","text": "Heading1"},
+            { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%", "name": "RandomImage",
                 "url": "http://lorempixel.com/400/200/"},
-            { "_id": "456", "widgetType": "HTML", "pageId": "321", "text": "<p>Hello HTML World</p>"},
-            { "_id": "567", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Heading2"},
-            { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%",
-                "url": "https://www.youtube.com/embed/AM2Ivdi9c4E" },
-            { "_id": "789", "widgetType": "HTML", "pageId": "321", "text": "<p>Hello HTML World</p>"}
+            { "_id": "456", "widgetType": "HTML", "pageId": "321", "name": "HTMLWidget1", "text": "<p>This is HTML widget 1</p>"},
+            { "_id": "567", "widgetType": "HEADING", "pageId": "321", "size": 4, "name": "Head2", "text": "Heading2"},
+            { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%", "name": "Yacht",
+                "url": "https://www.youtube.com/embed/AM2Ivdi9c4E", "text": "Sailing Yacht" },
+            { "_id": "789", "widgetType": "HTML", "pageId": "321", "name": "HTMLWidget2", "text": "<p>This is HTML widget 2</p>"}
         ];
 
         var createWidgetMap = {
-            'HEADER': createHeaderWidget,
+            'HEADING': createHeaderWidget,
             'IMAGE': createImageWidget,
             'YOUTUBE': createYouTubeWidget,
             'HTML': createHTMLWidget
@@ -49,13 +49,13 @@
                     return currentId + 1;
                 }
             }
-            widgets.reduce(getMaxID, 0).toString();
+            return widgets.reduce(getMaxID, 0).toString();
         }
 
         function createHeaderWidget(widgetId, pageId, widget) {
             return {
                 _id: widgetId,
-                widgetType: 'HEADER',
+                widgetType: 'HEADING',
                 pageId: pageId,
                 size: widget.size,
                 name: widget.name,
@@ -100,9 +100,9 @@
 
         function createWidget(pageId, widget) {
             var nextWidgetId = getNextID();
-            var newWidget = widget;
-            newWidget._id = nextWidgetId;
-            newWidget.pageId = pageId;
+            console.log(nextWidgetId);
+            var newWidget = createWidgetMap[widget.widgetType](nextWidgetId, pageId, widget);
+            console.log(newWidget);
             widgets.push(newWidget);
         }
 
@@ -133,7 +133,7 @@
 
         function deleteWidget(widgetId) {
             var oldWidget = findWidgetById(widgetId);
-            var index = Widgets.indexOf(oldWidget);
+            var index = widgets.indexOf(oldWidget);
             widgets.splice(index, 1);
         }
     }

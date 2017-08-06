@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-xs-12 col-sm-12">
+            <div class="navbar-text pull-left" id="left-chevron">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/new">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" href="">
+                    Widget Edit
+                </a>
+            </div>
+            <div class="navbar-text pull-right" id="ok-sign">
+                <a ng-click="model.createWidget()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
-</body>
-</html>
+<div class="row container-fluid">
+    <div class="col-xs-12 col-sm-12">
+        <div ng-show="model.createError" class="alert alert-danger" role="alert">{{model.createError}}</div>
+        <div ng-switch="model.widgetType">
+            <div ng-switch-when="HEADING">
+                <div ng-include="'views/widget/heading/widget-heading-edit.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="IMAGE">
+                <div ng-include="'views/widget/image/widget-image-edit.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="YOUTUBE">
+                <div ng-include="'views/widget/youtube/widget-youtube-edit.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="HTML">
+                <div ng-include="'views/widget/html/widget-html-edit.view.client.html'"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text row" id="bottom-navbar-row">
+            <div class="col-xs-12">
+                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

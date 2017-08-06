@@ -1,62 +1,24 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-sm-12">
-            <div class="navbar-text pull-left" id="left-chevron">
-                <a href="#!/widget-list.view.client">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-            </div>
-            <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="#">
-                    Widget Edit
-                </a>
-            </div>
-            <div class="navbar-text pull-right" id="ok-sign">
-                <a href="#!/widget-list.view.client">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </a>
-            </div>
-        </div>
+<form>
+    <div class="form-group">
+        <label for="imageName">Name</label>
+        <input ng-model="model.widgetName" type="text" id="imageName" class="form-control" placeholder="Image Name">
     </div>
-</nav>
-
-<div class="row container-fluid">
-    <div class="col-xs-12 col-sm-12">
-        <form>
-            <div class="form-group">
-                <label for="imageName">Name</label>
-                <input type="text" id="imageName" class="form-control" placeholder="Image Name">
-            </div>
-            <div class="form-group">
-                <label for="imageText">Text</label>
-                <input type="text" id="imageText" class="form-control" placeholder="Image Text">
-            </div>
-            <div class="form-group">
-                <label for="url">URL</label>
-                <input type="url" id="url" class="form-control" placeholder="Image URL">
-            </div>
-            <div class="form-group">
-                <label for="width">Width</label>
-                <input type="text" id="width" class="form-control" placeholder="Image Width">
-            </div>
-            <div class="form-group">
-                <label for="upload">Upload</label>
-                <input type="file" id="upload" class="form-control" placeholder="Image Upload">
-            </div>
-            <a href="#" class="btn btn-primary btn-block">Upload</a>
-            <a href="#!/widget-list.view.client" class="btn btn-danger btn-block">Delete</a>
-        </form>
+    <div class="form-group">
+        <label for="imageText">Text</label>
+        <input ng-model="model.widgetText" type="text" id="imageText" class="form-control" placeholder="Image Text">
     </div>
-</div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container-fluid">
-        <div class="navbar-text row" id="bottom-navbar-row">
-            <div class="col-xs-12">
-                <a href="#" class="pull-right" id="bottom-user-icon">
-                    <span class="glyphicon glyphicon-user"></span>
-                </a>
-            </div>
-        </div>
+    <div class="form-group">
+        <label for="url">URL</label>
+        <input ng-model="model.widgetUrl" type="url" id="url" class="form-control" placeholder="Image URL">
     </div>
-</nav>
+    <div class="form-group">
+        <label for="width">Width</label>
+        <input ng-model="model.widgetWidth" type="text" id="width" class="form-control" placeholder="Image Width">
+    </div>
+    <div class="form-group">
+        <label for="upload">Upload</label>
+        <input type="file" id="upload" class="form-control" placeholder="Image Upload">
+    </div>
+    <a href="#" class="btn btn-primary btn-block">Upload</a>
+    <a ng-show="model.widget" ng-click="model.deleteWidget()" class="btn btn-danger btn-block">Delete</a>
+</form>

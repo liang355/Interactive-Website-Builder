@@ -2,18 +2,13 @@
     <div class="row container-fluid">
         <div class="col-xs-12 col-sm-12">
             <div class="navbar-text pull-left" id="left-chevron">
-                <a href="#!/widget-list.view.client">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
             <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="">
                     Choose Widget
-                </a>
-            </div>
-            <div class="navbar-text pull-right" id="plus-sign">
-                <a href="#">
-                    <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </div>
         </div>
@@ -24,18 +19,23 @@
     <div class="col-xs-12 col-sm-12" id="websiteListArea">
         <ul class="list-group">
             <li class="list-group-item">
-                <a href="heading/widget-heading-edit.view.client.html">
-                    Header
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/create/HEADING">
+                    Heading
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="image/widget-image-edit.view.client.html">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/create/IMAGE">
                     Image
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="youtube/widget-youtube-edit.view.client.html">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/create/YOUTUBE">
                     YouTube
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/create/HTML">
+                    HTML
                 </a>
             </li>
         </ul>
@@ -46,7 +46,7 @@
     <div class="container-fluid">
         <div class="navbar-text row" id="bottom-navbar-row">
             <div class="col-xs-12">
-                <a href="#!/../user/profile.view.client" class="pull-right" id="bottom-user-icon">
+                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
                     <span class="glyphicon glyphicon-user"></span>
                 </a>
             </div>
