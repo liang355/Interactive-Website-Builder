@@ -1,0 +1,53 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-xs-12 col-sm-12">
+            <div class="navbar-text pull-left" id="left-chevron">
+                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" href="#">
+                    Widget Edit
+                </a>
+            </div>
+            <div class="navbar-text pull-right" id="ok-sign">
+                <a href="#!/widget-list.view.client">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="row container-fluid">
+    <div class="col-xs-12 col-sm-12">
+        <form>
+            <div class="form-group">
+                <label for="headerName">Name</label>
+                <input type="text" id="headerName" class="form-control" placeholder="Header Name">
+            </div>
+            <div class="form-group">
+                <label for="headerText">Text</label>
+                <input type="text" id="headerText" class="form-control" placeholder="Header Text">
+            </div>
+            <div class="form-group">
+                <label for="headerSize">Text</label>
+                <input type="number" id="headerSize" class="form-control" placeholder="Header Size">
+            </div>
+            <a href="#!/widget-list.view.client" class="btn btn-danger btn-block">Delete</a>
+        </form>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text row" id="bottom-navbar-row">
+            <div class="col-xs-12">
+                <a href="#" class="pull-right" id="bottom-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

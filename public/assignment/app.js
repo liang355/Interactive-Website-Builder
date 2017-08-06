@@ -3,5 +3,13 @@
  */
 
 (function(){
-    angular.module("WebAppMaker", ['ngRoute']);
+    var app = angular
+        .module("WebAppMaker", ['ngRoute', 'ngSanitize']);
+
+    app.config(['$sceDelegateProvider', function($sceDelegateProvider) {
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'https://www.youtube.com/**'
+        ]);
+    }]);
 })();
