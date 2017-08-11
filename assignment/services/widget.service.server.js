@@ -17,7 +17,7 @@ module.exports = function(app) {
     //POST Calls
     app.post('/api/page/:pageId/widget', createWidget);
 
-    app.post('/api/upload', upload.single('myFile'), uploadImage);
+    // app.post('/api/upload', upload.single('myFile'), uploadImage);
 
     //GET Calls
     app.get('/api/page/:pageId/widget', findWidgetsByPageId);
@@ -149,6 +149,31 @@ module.exports = function(app) {
             }
         }
         res.sendStatus(404);
+    }
+
+    function sortWidget(req, res) {
+        var pageId = req.params.pageId;
+        var pageWidgets = [];
+        for(wi in widgets) {
+            var widget = widgets[wi];
+            if(parseInt(widget.pageId) === parseInt(pageId)) {
+                pageWidgets.push(widget);
+            }
+        }
+
+        var index1 = req.query.start;
+        var index2 = req.query.end;
+
+        var start = widgets.indexOf(pageWidgets[index1]);
+        var end = widgets.indexOf(pageWidgets[index2]);
+
+        if(index1 && index2) {
+            widgets.splice(end, 0, widgets.splice(start, 1)[0]);
+            console.log(widgets);
+            res.sendStatus(200);
+            return;
+        }
+        res.sendStatus(404).send("cannot be reorder");
     }
 
     function uplodadImage(req, res) {

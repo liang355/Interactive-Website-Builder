@@ -22,7 +22,7 @@
 
 <div class="row container-fluid">
     <div class="col-xs-12 col-sm-12" id="websiteListArea">
-        <ul class="list-group" id="sortable">
+        <ul sortable pid="model.pid" class="list-group">
             <li ng-repeat="widget in model.widgets" class="list-group-item" style="position: relative">
                 <!--{{widget.widgetType}}-->
                 <!--<ng-include src="'views/widget/include.html'"></ng-include>-->
