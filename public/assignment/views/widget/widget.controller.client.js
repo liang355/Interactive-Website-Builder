@@ -11,28 +11,27 @@
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
-        vm.widgets = WidgetService.findWidgetsByPageId(vm.pid);
-        console.log(vm.widgets);
+        WidgetService.findWidgetsByPageId(vm.pid)
+            .then(function (response) {
+                vm.widgets = response.data;
+            });
     }
 
-    function NewWidgetController($routeParams, WidgetService) {
+    function NewWidgetController($routeParams) {
         var vm = this;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
-        vm.widgets = WidgetService.findWidgetsByPageId(vm.pid);
-        vm.featureMissingAlert = null;
     }
 
     function CreateWidgetController($routeParams, $location, WidgetService) {
         var vm = this;
+        vm.createWidget = createWidget;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
         vm.widgetType = $routeParams.wtype;
-        vm.createWidget = createWidget;
         vm.createError = null;
-        console.log(vm.widgetSize);
 
         function createWidget() {
             if (vm.widgetType === 'IMAGE' || vm.widgetType === 'YOUTUBE') {
@@ -59,39 +58,46 @@
                 width: vm.widgetWidth,
                 url: vm.widgetUrl
             };
-            WidgetService.createWidget(vm.pid, newWidget);
-            $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+            WidgetService.createWidget(vm.pid, newWidget)
+                .then(function (response) {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+                }, function (error) {
+                    console.log(error);
+                });
+
         }
     }
 
     function EditWidgetController($routeParams, $location, WidgetService) {
         var vm = this;
+        vm.updateWidget = updateWidget;
+        vm.deleteWidget = deleteWidget;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
         vm.wgid = $routeParams.wgid;
-        vm.widget = WidgetService.findWidgetById(vm.wgid);
-        vm.updateWidget = updateWidget;
-        vm.deleteWidget = deleteWidget;
-
-        if (vm.widget.widgetType === "HEADING") {
-            vm.widgetName = vm.widget.name;
-            vm.widgetText = vm.widget.text;
-            vm.widgetSize = vm.widget.size;
-        } else if (vm.widget.widgetType === "IMAGE") {
-            vm.widgetName = vm.widget.name;
-            vm.widgetText = vm.widget.text;
-            vm.widgetUrl = vm.widget.url;
-            vm.widgetWidth = vm.widget.width;
-        } else if (vm.widget.widgetType === "YOUTUBE") {
-            vm.widgetName = vm.widget.name;
-            vm.widgetText = vm.widget.text;
-            vm.widgetUrl = vm.widget.url;
-            vm.widgetWidth = vm.widget.width;
-        } else if (vm.widget.widgetType === "HTML") {
-            vm.widgetName = vm.widget.name;
-            vm.widgetText = vm.widget.text;
-        }
+        WidgetService.findWidgetById(vm.wgid)
+            .then(function (response) {
+                vm.widget = response.data;
+                if (vm.widget.widgetType === "HEADING") {
+                    vm.widgetName = vm.widget.name;
+                    vm.widgetText = vm.widget.text;
+                    vm.widgetSize = vm.widget.size;
+                } else if (vm.widget.widgetType === "IMAGE") {
+                    vm.widgetName = vm.widget.name;
+                    vm.widgetText = vm.widget.text;
+                    vm.widgetUrl = vm.widget.url;
+                    vm.widgetWidth = vm.widget.width;
+                } else if (vm.widget.widgetType === "YOUTUBE") {
+                    vm.widgetName = vm.widget.name;
+                    vm.widgetText = vm.widget.text;
+                    vm.widgetUrl = vm.widget.url;
+                    vm.widgetWidth = vm.widget.width;
+                } else if (vm.widget.widgetType === "HTML") {
+                    vm.widgetName = vm.widget.name;
+                    vm.widgetText = vm.widget.text;
+                }
+            });
 
         function updateWidget() {
             if (vm.widget.widgetType === 'IMAGE' || vm.widget.widgetType === 'YOUTUBE') {
@@ -118,13 +124,21 @@
                 width: vm.widgetWidth,
                 url: vm.widgetUrl
             };
-            WidgetService.updateWidget(vm.wgid, latestData);
-            $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+            WidgetService.updateWidget(vm.wgid, latestData)
+                .then(function (response) {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+                }, function (error) {
+                    console.log(error);
+                });
         }
 
         function deleteWidget() {
-            WidgetService.deleteWidget(vm.wgid);
-            $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+            WidgetService.deleteWidget(vm.wgid)
+                .then(function (response) {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+                }, function (error) {
+                    console.log(error);
+                });
         }
 
     }
