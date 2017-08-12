@@ -177,13 +177,18 @@ module.exports = function(app) {
     }
 
     function uploadImage(req, res) {
-        var myFile = req.file;
         var width = req.body.width;
         var userId = req.body.userId;
         var websiteId = req.body.websiteId;
         var pageId = req.body.pageId;
         var widgetId = req.body.widgetId;
+        var redirectUrl = "/#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/";
 
+        var myFile = req.file;
+        if(!myFile) {
+            res.redirect(redirectUrl);
+            return;
+        }
         var filename = myFile.filename;           //new file name in upload folder
         var size = myFile.size;
 
@@ -199,14 +204,13 @@ module.exports = function(app) {
                 url: '/uploads/' + filename
             };
             widgets.push(widget);
-            res.redirect("/#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/");
         } else {
             for (var i = 0; i < widgets.length; i++) {
                 if (widgets[i]._id === widgetId) {
                     widgets[i].url = '/uploads/' + filename;
-                    res.redirect("/#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/");
                 }
             }
         }
+        res.redirect(redirectUrl);
     }
 };
