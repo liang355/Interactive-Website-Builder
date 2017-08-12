@@ -1,6 +1,6 @@
 module.exports = function(app) {
-    var multer  = require('multer')
-    var upload = multer({ dest: __dirname + '/public/assignment/uploads' })
+    var multer  = require('multer');
+    var upload = multer({ dest: __dirname+'/../../public/assignment/uploads' });
 
     var widgets = [
         { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "name": "Grizzy", "text": "GIZMODO Heading"},
@@ -17,7 +17,7 @@ module.exports = function(app) {
     //POST Calls
     app.post('/api/page/:pageId/widget', createWidget);
 
-    // app.post('/api/upload', upload.single('myFile'), uploadImage);
+    app.post('/api/upload', upload.single('myFile'), uploadImage);
 
     //GET Calls
     app.get('/api/page/:pageId/widget', findWidgetsByPageId);
@@ -176,7 +176,37 @@ module.exports = function(app) {
         res.sendStatus(404).send("cannot be reorder");
     }
 
-    function uplodadImage(req, res) {
+    function uploadImage(req, res) {
+        var myFile = req.file;
+        var width = req.body.width;
+        var userId = req.body.userId;
+        var websiteId = req.body.websiteId;
+        var pageId = req.body.pageId;
+        var widgetId = req.body.widgetId;
 
+        var filename = myFile.filename;           //new file name in upload folder
+        var size = myFile.size;
+
+        if(!widgetId) {
+            var widget = {
+                _id: getNextID(),
+                widgetType: 'IMAGE',
+                pageId: pageId,
+                size: size,
+                text: '',
+                name: '',
+                width: width,
+                url: '/uploads/' + filename
+            };
+            widgets.push(widget);
+            res.redirect("/#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/");
+        } else {
+            for (var i = 0; i < widgets.length; i++) {
+                if (widgets[i]._id === widgetId) {
+                    widgets[i].url = '/uploads/' + filename;
+                    res.redirect("/#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/");
+                }
+            }
+        }
     }
 };
