@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, models) {
     var multer  = require('multer');
     var upload = multer({ dest: __dirname+'/../../public/assignment/uploads' });
 

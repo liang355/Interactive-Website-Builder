@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, models) {
     var pages = [
         { _id: "321", name: "GizPost 1", websiteId: "456", description: "Lorem" },
         { _id: "432", name: "GizPost 2", websiteId: "456", description: "Lorem" },

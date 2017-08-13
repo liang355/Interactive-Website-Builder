@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(app, models){
 
     var websites = [
         {_id: "123", name: "Facebook", developerId: "456", description: "Test01"},
