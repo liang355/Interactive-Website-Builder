@@ -1,14 +1,16 @@
 module.exports = function(mongoose){
     var userSchema = require('./user.schema.server.js')(mongoose);
-    var userModel = mongoose.model('User', userSchema);
+    var userModel = mongoose.model('userModel', userSchema);
 
     var api = {
         'createUser' : createUser,
+        'findAllUser' : findAllUser,
         'findUserById' : findUserById,
         'findUserByUsername' : findUserByUsername,
         'findUserByCredentials' : findUserByCredentials,
         'updateUser' : updateUser,
         'removeWebsiteFromUser' : removeWebsiteFromUser,
+        'addWebsiteForUser' : addWebsiteForUser,
         'deleteUser' : deleteUser
     };
 
@@ -39,8 +41,12 @@ module.exports = function(mongoose){
         return userModel.create(newUser);
     }
 
+    function findAllUser() {
+        return userModel.find();
+    }
+
     function findUserById(userId){
-        return userModel.findById(userId);
+        return userModel.findById({_id: userId});
     }
 
     function findUserByUsername(uname){
@@ -79,6 +85,16 @@ module.exports = function(mongoose){
                     console.log(error);
                 }
             );
+    }
+
+    function addWebsiteForUser(userId, websiteId) {
+        console.log("added!");
+        return userModel
+            .findOne({_id: userId})
+            .then(function (user) {
+                user.websites.push(websiteId);
+                return user.save();
+            });
     }
 
     function deleteUser(userId){
