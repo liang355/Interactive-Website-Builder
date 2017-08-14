@@ -13,12 +13,14 @@
             UserService.findUserByCredentials(username, password)
                 .then(function(response){
                     var user = response.data;
+                    console.log(user);
                     if (user === null || user === undefined || user === "") {
                         vm.error = "No Such User";
                     } else {
                         $location.url("/user/" + user._id);
                     }
                 },function(error){
+                    console.log(error);
                     vm.error = "Error Connecting to Server. Please try again later.";
                     $timeout(function () {
                         vm.error = null;
@@ -55,6 +57,8 @@
                             .then(function (response) {
                                 var user = response.data;
                                 $location.url("/user/" + user._id);
+                            }, function (error) {
+                                console.log(error);
                             });
                     }
                     else {
@@ -70,6 +74,7 @@
     function ProfileController($routeParams, $timeout, UserService) {
         var vm = this;
         vm.updateUser = updateUser;
+        console.log($routeParams.uid);
 
         UserService.findUserById($routeParams.uid)
             .then(function (response) {

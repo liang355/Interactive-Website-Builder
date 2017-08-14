@@ -19,7 +19,9 @@ module.exports = function(mongoose){
     // Function Definition Section
 
     function createUser(user){
+        console.log("create user!");
         var newUser = {
+            _id: new Date().getTime().toString(),
             username : user.username,
             password : user.password,
             websites : []
@@ -34,10 +36,6 @@ module.exports = function(mongoose){
         if(user.email){
             newUser.email = user.email;
         }
-        if(user.phone){
-            newUser.phone = user.phone;
-        }
-
         return userModel.create(newUser);
     }
 
@@ -46,15 +44,18 @@ module.exports = function(mongoose){
     }
 
     function findUserById(userId){
+        console.log("find user by id!");
         return userModel.findById({_id: userId});
     }
 
     function findUserByUsername(uname){
+        console.log("find user by username!");
         return userModel.findOne({username : uname})
     }
 
 
     function findUserByCredentials(username, password){
+        console.log("find user by credentials!");
         return userModel.findOne({
             username : username,
             password : password
@@ -62,13 +63,13 @@ module.exports = function(mongoose){
     }
 
     function updateUser(userId, user){
+        console.log("update user!");
         return userModel.update({
             _id : userId
         }, {
             firstName : user.firstName,
             lastName : user.lastName,
-            email : user.email,
-            phone : user.phone
+            email : user.email
         });
     }
 
@@ -88,7 +89,6 @@ module.exports = function(mongoose){
     }
 
     function addWebsiteForUser(userId, websiteId) {
-        console.log("added!");
         return userModel
             .findOne({_id: userId})
             .then(function (user) {

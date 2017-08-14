@@ -7,6 +7,7 @@
        var services = {
            "createUser": createUser,
            "findUserById": findUserById,
+           "findAllUser": findAllUser,
            "findUserByUsername": findUserByUsername,
            "findUserByCredentials": findUserByCredentials,
            "updateUser": updateUser,
@@ -21,6 +22,11 @@
 
        function findUserById(userId) {
            var url = "/api/user/" + userId;
+           return $http.get(url);
+       }
+
+       function findAllUser() {
+           var url = "/api/user/";
            return $http.get(url);
        }
 

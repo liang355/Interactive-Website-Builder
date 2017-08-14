@@ -1,13 +1,13 @@
 module.exports = function(app, models){
-
-    var websites = [
-        {_id: "123", name: "Facebook", developerId: "456", description: "Test01"},
-        {_id: "234", name: "Tweeter", developerId: "456", description: "Test02"},
-        {_id: "456", name: "Gizmodo", developerId: "456", description: "Test03"},
-        {_id: "567", name: "Tic Tac Toe", developerId: "123", description: "Test04"},
-        {_id: "678", name: "Checkers", developerId: "123", description: "Test05"},
-        {_id: "789", name: "Chess", developerId: "234", description: "Test06"}
-    ];
+    var model = models.websiteModel;
+    // var websites = [
+    //     {_id: "123", name: "Facebook", developerId: "456", description: "Test01"},
+    //     {_id: "234", name: "Tweeter", developerId: "456", description: "Test02"},
+    //     {_id: "456", name: "Gizmodo", developerId: "456", description: "Test03"},
+    //     {_id: "567", name: "Tic Tac Toe", developerId: "123", description: "Test04"},
+    //     {_id: "678", name: "Checkers", developerId: "123", description: "Test05"},
+    //     {_id: "789", name: "Chess", developerId: "234", description: "Test06"}
+    // ];
 
     //POST Calls
     app.post('/api/user/:userId/website',createWebsite);
@@ -24,32 +24,40 @@ module.exports = function(app, models){
     app.delete('/api/website/:websiteId',deleteWebsite);
 
     //HELPER functions
-    function getNextID() {
-        function getMaxId(maxId, currentId) {
-            var current = parseInt(currentId._id);
-            if (maxId > current) {
-                return maxId;
-            } else {
-                return current + 1;
-            }
-        }
-        return websites.reduce(getMaxId, 0).toString();
-    }
+    // function getNextID() {
+    //     function getMaxId(maxId, currentId) {
+    //         var current = parseInt(currentId._id);
+    //         if (maxId > current) {
+    //             return maxId;
+    //         } else {
+    //             return current + 1;
+    //         }
+    //     }
+    //     return websites.reduce(getMaxId, 0).toString();
+    // }
 
     /*API calls implementation*/
     function createWebsite(req, res) {
         var userId = req.params.userId;
         var website = req.body;
 
-        var newWebsite = {
-            _id: getNextID(),
-            name: website.name,
-            description: website.description,
-            developerId: userId
-        };
-        websites.push(newWebsite);
+        model
+            .createWebsiteForUser(userId, website)
+            .then(function (website) {
+                res.json(website);
+            }, function (error) {
+                console.log(error);
+            });
 
-        res.sendStatus(200);
+        // var newWebsite = {
+        //     _id: getNextID(),
+        //     name: website.name,
+        //     description: website.description,
+        //     developerId: userId
+        // };
+        // websites.push(newWebsite);
+        //
+        // res.sendStatus(200);
     }
 
     function findWebsitesByUser(req, res) {

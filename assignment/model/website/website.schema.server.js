@@ -3,6 +3,7 @@ module.exports = function (mongoose) {
     var Schema = mongoose.Schema;
 
     var websiteSchema = new Schema({
+        _id: String,
         _user : {type : Schema.Types.ObjectId, ref : 'userModel'},
         name : {type : String, required : true},
         description : String,

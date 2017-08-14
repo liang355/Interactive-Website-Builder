@@ -3,12 +3,12 @@ module.exports = function(mongoose){
     var Schema = mongoose.Schema;
 
     var userSchema = new Schema({
+        _id: String,
         username : {type : String, required : true},
         password : {type : String, required : true},
         firstName : String,
         lastName : String,
         email : String,
-        phone : String,
         websites : [{
             type: Schema.Types.ObjectId,
             ref : 'websiteModel'
