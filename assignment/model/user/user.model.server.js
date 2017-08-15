@@ -74,18 +74,15 @@ module.exports = function(mongoose){
     }
 
     function removeWebsiteFromUser(userId, websiteId){
-        // db.user.update({_id : ObjectId("583cf3287ac013080c4adee5")}, {$push : { "websites" : ObjectId("583cf43693b914082152cc3c")}})
-        userModel
+        return userModel
             .findById(userId)
             .then(
                 function(user){
+                    console.log(user);
                     user.websites.pull(websiteId);
-                    user.save();
-                },
-                function(error){
-                    console.log(error);
-                }
-            );
+                    console.log(user);
+                    return user.save();
+                });
     }
 
     function addWebsiteForUser(userId, websiteId) {

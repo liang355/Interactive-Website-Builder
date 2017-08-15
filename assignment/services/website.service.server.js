@@ -43,63 +43,84 @@ module.exports = function(app, models){
 
         model
             .createWebsiteForUser(userId, website)
-            .then(function (website) {
-                res.json(website);
+            .then(function (user) {
+                console.log(user);
+                res.json(user);
             }, function (error) {
                 console.log(error);
             });
-
-        // var newWebsite = {
-        //     _id: getNextID(),
-        //     name: website.name,
-        //     description: website.description,
-        //     developerId: userId
-        // };
-        // websites.push(newWebsite);
-        //
-        // res.sendStatus(200);
     }
 
     function findWebsitesByUser(req, res) {
         var userId = req.params.userId;
-        var results = websites.filter(function (website) {
-            return parseInt(website.developerId) === parseInt(userId)
-        });
-        res.send(results);
+        model
+            .findAllWebsitesForUser(userId)
+            .then(function (websites) {
+                res.send(websites);
+            }, function (error) {
+                console.log(error);
+                res.sendStatus(404).send(error);
+            });
+
+        // var results = websites.filter(function (website) {
+        //     return parseInt(website.developerId) === parseInt(userId)
+        // });
+        // res.send(results);
     }
 
     function findWebsiteById(req, res) {
         var websiteId = req.params.websiteId;
-        var website = websites.find(function (website) {
-            return parseInt(website._id) === parseInt(websiteId)
-        });
-        res.send(website);
+        model
+            .findWebsiteById(websiteId)
+            .then(function (website) {
+                res.send(website);
+            }, function (error) {
+                res.sendStatus(404).send(error);
+            });
+        // var website = websites.find(function (website) {
+        //     return parseInt(website._id) === parseInt(websiteId)
+        // });
+        // res.send(website);
     }
 
     function updateWebsite(req, res) {
         var websiteId = req.params.websiteId;
         var website = req.body;
 
-        for (var i = 0; i < websites.length; i++) {
-            if (parseInt(websites[i]._id) === parseInt(websiteId)) {
-                websites[i].name = website.name;
-                websites[i].description = website.description;
-                res.sendStatus(200);
-                return;
-            }
-        }
-        res.sendStatus(404);
+        model
+            .updateWebsite(websiteId, website)
+            .then(function (website) {
+                res.send(website);
+            }, function (error) {
+                res.sendStatus(404).send(error);
+            })
+        // for (var i = 0; i < websites.length; i++) {
+        //     if (parseInt(websites[i]._id) === parseInt(websiteId)) {
+        //         websites[i].name = website.name;
+        //         websites[i].description = website.description;
+        //         res.sendStatus(200);
+        //         return;
+        //     }
+        // }
+        // res.sendStatus(404);
     }
 
     function deleteWebsite(req, res) {
         var websiteId = req.params.websiteId;
-        for (var i = 0; i < websites.length; i++) {
-            if (parseInt(websites[i]._id) === parseInt(websiteId)) {
-                websites.splice(i, 1);
-                res.sendStatus(200);
-                return;
-            }
+        console.log(websiteId);
+        console.log("hahaha");
+
+        if(websiteId){
+            model
+                .deleteWebsite(websiteId)
+                .then(function (status){
+                        res.sendStatus(200).send(status);
+                    }, function (error){
+                        res.sendStatus(400).send(error);}
+                );
+        } else{
+            // Precondition Failed. Precondition is that the user exists.
+            res.sendStatus(412);
         }
-        res.sendStatus(404);
     }
 };

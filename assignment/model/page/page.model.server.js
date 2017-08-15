@@ -15,6 +15,7 @@ module.exports = function(mongoose, websiteModel){
     return api;
 
     function createPage(websiteId, page) {
+        page._id = new Date().getTime().toString();
         page._website = websiteId;
         return pageModel
             .create(page)
@@ -26,7 +27,7 @@ module.exports = function(mongoose, websiteModel){
     }
 
     function findAllPagesForWebsite(websiteId) {
-        return pages = pageModel
+        return pageModel
             .find({_website : websiteId})
             .populate('_website')
             .exec();

@@ -55,7 +55,6 @@
             });
         WebsiteService.findWebsiteById(vm.wid)
             .then(function (response) {
-                console.log(response);
                 vm.website = response.data;
                 vm.websiteName = vm.website.name;
                 vm.websiteDescription = vm.website.description;
@@ -68,7 +67,6 @@
             }
             var newWebsite = {
                 name: vm.websiteName,
-                developerId: vm.uid,
                 description: vm.websiteDescription
             };
             WebsiteService.updateWebsite(vm.wid, newWebsite)
@@ -80,8 +78,14 @@
         }
 
         function deleteWebsite() {
-            WebsiteService.deleteWebsite(vm.wid);
-            $location.url("/user/" + vm.uid + "/website/");
+            console.log(vm.wid);
+            console.log("aaaaa");
+            WebsiteService.deleteWebsite(vm.wid)
+                .then(function (response) {
+                    $location.url("/user/" + vm.uid + "/website/");
+                }, function (error) {
+                    console.log(error);
+                });
         }
     }
 

@@ -4,12 +4,13 @@ module.exports = function(mongoose){
     var Schema = mongoose.Schema;
 
     var pageSchema = new Schema({
-        _website : {type : Schema.Types.ObjectId, ref : 'websiteModel'},
+        _id: String,
+        _website : {type : String, ref : 'websiteModel'},
         name : {type : String, required : true},
         title : String,
         description : String,
         widgets : [{
-            type : Schema.Types.ObjectId,
+            type : String,
             ref : 'widgetModel'
         }],
         dateCreated : {

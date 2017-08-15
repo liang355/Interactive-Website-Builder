@@ -2,6 +2,7 @@ module.exports = function(mongoose){
     var Schema = mongoose.Schema;
 
     var widgetSchema = new Schema({
+        _id: String,
         _page : {type : Schema.Types.ObjectId, ref : 'pageModel'},
         widgetType : {
             type : String,

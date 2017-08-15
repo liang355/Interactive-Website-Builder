@@ -20,6 +20,7 @@ module.exports = function(mongoose, pageModel) {
         if (widget.size === undefined) {
             widget.size = -1;
         }
+        widget._id = new Date().getTime().toString();
         widget._page = pageId;
 
         return widgetModel

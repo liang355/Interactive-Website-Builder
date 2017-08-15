@@ -13,7 +13,6 @@
             UserService.findUserByCredentials(username, password)
                 .then(function(response){
                     var user = response.data;
-                    console.log(user);
                     if (user === null || user === undefined || user === "") {
                         vm.error = "No Such User";
                     } else {
@@ -74,7 +73,6 @@
     function ProfileController($routeParams, $timeout, UserService) {
         var vm = this;
         vm.updateUser = updateUser;
-        console.log($routeParams.uid);
 
         UserService.findUserById($routeParams.uid)
             .then(function (response) {

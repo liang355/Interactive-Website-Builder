@@ -1,4 +1,5 @@
 module.exports = function(app, models) {
+    var model = models.pageModel;
     var pages = [
         { _id: "321", name: "GizPost 1", websiteId: "456", description: "Lorem" },
         { _id: "432", name: "GizPost 2", websiteId: "456", description: "Lorem" },
@@ -20,17 +21,17 @@ module.exports = function(app, models) {
     app.delete('/api/page/:pageId',deletePage);
 
     //HELPER functions
-    function getNextID() {
-        function getMaxId(maxId, currentId) {
-            var current = parseInt(currentId._id);
-            if (maxId > current) {
-                return maxId;
-            } else {
-                return current + 1;
-            }
-        }
-        return pages.reduce(getMaxId, 0).toString();
-    }
+    // function getNextID() {
+    //     function getMaxId(maxId, currentId) {
+    //         var current = parseInt(currentId._id);
+    //         if (maxId > current) {
+    //             return maxId;
+    //         } else {
+    //             return current + 1;
+    //         }
+    //     }
+    //     return pages.reduce(getMaxId, 0).toString();
+    // }
 
     /*API calls implementation*/
     function createPage(req, res) {
@@ -49,10 +50,17 @@ module.exports = function(app, models) {
 
     function findPagesByWebsiteId(req, res) {
         var websiteId = req.params.websiteId;
-        var results = pages.filter(function (page) {
-            return page.websiteId === websiteId
-        });
-        res.send(results);
+        model
+            .findAllPagesForWebsite(websiteId)
+            .then(function (pages) {
+                res.send(pages);
+            }, function (error) {
+                res.sendStatus(500).send(error);
+            })
+        // var results = pages.filter(function (page) {
+        //     return page.websiteId === websiteId
+        // });
+        // res.send(results);
     }
 
     function findPageById(req, res) {

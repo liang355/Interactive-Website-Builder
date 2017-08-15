@@ -45,11 +45,10 @@ module.exports = function (app, models) {
             .createUser(user)
             .then(
                 function (newUser) {
-                    console.log("new user", user);
                     res.json(newUser);
                 },
                 function (error) {
-                    res.sendStatus(404).send(error);
+                    res.sendStatus(500).send(error);
                 }
             );
     }
@@ -61,7 +60,6 @@ module.exports = function (app, models) {
                 .findUserById(params.userId)
                 .then(
                     function (user){
-                        console.log("service.server", user);
                         if(user){
                             res.json(user);
                         } else {
@@ -70,8 +68,7 @@ module.exports = function (app, models) {
                         }
                     },
                     function (error){
-                        console.log("error!!!");
-                        res.sendStatus(400).send(error);
+                        res.sendStatus(500).send(error);
                     }
                 );
         }
@@ -86,7 +83,7 @@ module.exports = function (app, models) {
                 .then(function (user) {
                     res.send(user);
                 }, function (error) {
-                    console.log(error);
+                    res.sendStatus(500).send(error);
                 });
         }
         else if (username) {
@@ -95,7 +92,7 @@ module.exports = function (app, models) {
                 .then(function (user) {
                     res.send(user);
                 }, function (error) {
-                    console.log(error);
+                    res.sendStatus(500).send(error);
                 })
         } else {
             model
@@ -132,7 +129,7 @@ module.exports = function (app, models) {
             .then(function (response) {
                 res.send(response);
             }, function (error) {
-                res.sendStatus(404).send(error);
+                res.sendStatus(500).send(error);
             })
 
         // for (var i = 0; i < users.length; i++){
@@ -155,10 +152,10 @@ module.exports = function (app, models) {
                 .then(function (response) {
                     res.send(response);
                 }, function (error) {
-                    res.sendStatus(404).send(error);
+                    res.sendStatus(500).send(error);
                 });
         } else {
-            res.sendStatus(400);
+            res.sendStatus(500).send("userId is empty !");
         }
     }
 };

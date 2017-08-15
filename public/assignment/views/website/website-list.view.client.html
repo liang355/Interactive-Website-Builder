@@ -24,8 +24,8 @@
     <div class="col-xs-12 col-sm-12" id="websiteListArea">
         <ul class="list-group">
             <li ng-repeat="website in model.websites" class="list-group-item">
-                <a href="#!/user/{{website.developerId}}/website/{{website._id}}/page">{{website.name}}</a>
-                <a href="#!/user/{{website.developerId}}/website/{{website._id}}">
+                <a href="#!/user/{{model.uid}}/website/{{website._id}}/page">{{website.name}}</a>
+                <a href="#!/user/{{model.uid}}/website/{{website._id}}">
                     <span class="glyphicon glyphicon-cog pull-right"></span>
                 </a>
             </li>

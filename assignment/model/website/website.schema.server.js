@@ -4,11 +4,11 @@ module.exports = function (mongoose) {
 
     var websiteSchema = new Schema({
         _id: String,
-        _user : {type : Schema.Types.ObjectId, ref : 'userModel'},
+        _user : {type : String, ref : 'userModel'},
         name : {type : String, required : true},
         description : String,
         pages : [{
-            type : Schema.Types.ObjectId,
+            type : String,
             ref : 'pageModel'
         }],
         dateCreated : {

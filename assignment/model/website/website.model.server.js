@@ -15,14 +15,14 @@ module.exports = function(mongoose, userModel) {
      return api;
 
     function createWebsiteForUser(userId, website) {
+        website._id = new Date().getTime().toString();
         website._user = userId;
         return websiteModel
             .create(website)
-            .then(
-                function (website) {
-                    return userModel
-                        .addWebsiteForUser(userId, website._id);
-                });
+            .then(function (website) {
+                return userModel
+                    .addWebsiteForUser(userId, website._id);
+            });
     }
 
     function findAllWebsites() {
@@ -30,7 +30,7 @@ module.exports = function(mongoose, userModel) {
     }
 
     function findAllWebsiteForUser(userId) {
-        return websites = websiteModel
+        return websiteModel
             .find({_user : userId})
             .populate('_user')
             .exec();
@@ -74,10 +74,17 @@ module.exports = function(mongoose, userModel) {
     }
 
     function deleteWebsite(websiteId) {
-        var userId = websiteModel.findOne({_id: websiteId})._user;
-
-        return websiteModel.remove({
-            _id: websiteId
-        });
+        return websiteModel
+            .findById(websiteId)
+            .then(function (website) {
+                var userId = website._user;
+                console.log(userId);
+                return userModel
+                    .removeWebsiteFromUser(userId, websiteId)
+                    .then(function (user) {
+                        return websiteModel
+                            .remove({_id: websiteId});
+                    });
+            });
     }
 };
