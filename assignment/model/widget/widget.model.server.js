@@ -8,18 +8,19 @@ module.exports = function(mongoose, pageModel) {
         'findWidgetById' : findWidgetById,
         'updateWidget' : updateWidget,
         'deleteWidget' : deleteWidget,
-        'reorderWidget' : reorderWidget
+        'reorderWidget' : reorderWidget,
+        'reorderWidgetArray': reorderWidgetArray
     };
 
     return api;
 
     function createWidget(pageId, widget) {
-        if (widget.rows === undefined) {
-            widget.rows = -1;
-        }
-        if (widget.size === undefined) {
-            widget.size = -1;
-        }
+        // if (widget.rows === undefined) {
+        //     widget.rows = -1;
+        // }
+        // if (widget.size === undefined) {
+        //     widget.size = -1;
+        // }
         widget._id = new Date().getTime().toString();
         widget._page = pageId;
 
@@ -30,22 +31,14 @@ module.exports = function(mongoose, pageModel) {
                     return pageModel
                         .addWidgetToPage(pageId, widget._id);
                 });
-
     }
 
     function findAllWidgetsForPage(pageId) {
-
         //find widgets in page.widgets.
-        return pageModel
-            .findPageById(pageId)
-            .populate('widgets')
-            .then(
-                function (page) {
-                    console.log(page.widgets);
-                    return page.widgets;
-                }
-            )
-
+        return widgetModel
+            .find({_page: pageId})
+            .populate('_page')
+            .exec();
     }
 
     function findWidgetById(widgetId) {
@@ -53,42 +46,58 @@ module.exports = function(mongoose, pageModel) {
     }
 
     function updateWidget(widgetId, widget) {
-        if (widget.rows === undefined) {
-            widget.rows = -1;
-        }
-        if (widget.size === undefined) {
-            widget.size = -1;
-        }
+        // if (widget.rows === undefined) {
+        //     widget.rows = -1;
+        // }
+        // if (widget.size === undefined) {
+        //     widget.size = -1;
+        // }
         // console.log(typeof widget.size);
 
-        return widgetModel.update({
-            _id : widgetId
-        }, {
-            name: widget.name,
-            text: widget.text,
-            placeholder: widget.placeholder,
-            description: widget.description,
-            url: widget.url,
-            width: widget.width,
-            size: widget.size,
-            rows: widget.rows,
-            formatted: widget.formatted
-        });
+        return widgetModel
+            .update({_id : widgetId}, widget);
     }
 
     function deleteWidget(widgetId) {
-        var pageId = widgetModel.findOne({_id: widgetId})._page;
-
         return widgetModel
-            .remove({_id: widgetId})
-            .then(function (status) {
+            .findById(widgetId)
+            .then(function (widget) {
+                var pageId = widget._page;
                 return pageModel
-                    .removeWidgetFromPage(pageId, widgetId);
-            })
+                    .removeWidgetFromPage(pageId, widgetId)
+                    .then(function (widget) {
+                        return widgetModel
+                            .remove({_id: widgetId});
+                    });
+            });
 
     }
 
     function reorderWidget(pageId, start, end) {
+        var tempWidgets;
+        return widgetModel
+            .find({_page: pageId})
+            .then(function (widgets) {
+                tempWidgets = widgets;
+                // var _idArray = widgets.map(function(widget) {return widget._id;});
+                // console.log(_idArray);
+                return widgetModel
+                    .remove({_page: pageId})
+                    .then(function (response) {
+                        // console.log(response);
+                        return widgetModel
+                            .create(tempWidgets, function (err, newWidgets) {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                console.log(newWidgets);
+                            })
+
+                    });
+            });
+    }
+
+    function reorderWidgetArray(pageId, start, end) {
         return pageModel
             .findPageById(pageId)
             .then(

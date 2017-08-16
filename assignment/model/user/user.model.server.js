@@ -44,18 +44,15 @@ module.exports = function(mongoose){
     }
 
     function findUserById(userId){
-        console.log("find user by id!");
         return userModel.findById({_id: userId});
     }
 
     function findUserByUsername(uname){
-        console.log("find user by username!");
         return userModel.findOne({username : uname})
     }
 
 
     function findUserByCredentials(username, password){
-        console.log("find user by credentials!");
         return userModel.findOne({
             username : username,
             password : password
@@ -63,7 +60,6 @@ module.exports = function(mongoose){
     }
 
     function updateUser(userId, user){
-        console.log("update user!");
         return userModel.update({
             _id : userId
         }, {
@@ -78,9 +74,7 @@ module.exports = function(mongoose){
             .findById(userId)
             .then(
                 function(user){
-                    console.log(user);
                     user.websites.pull(websiteId);
-                    console.log(user);
                     return user.save();
                 });
     }

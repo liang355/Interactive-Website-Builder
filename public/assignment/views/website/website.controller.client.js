@@ -78,8 +78,6 @@
         }
 
         function deleteWebsite() {
-            console.log(vm.wid);
-            console.log("aaaaa");
             WebsiteService.deleteWebsite(vm.wid)
                 .then(function (response) {
                     $location.url("/user/" + vm.uid + "/website/");

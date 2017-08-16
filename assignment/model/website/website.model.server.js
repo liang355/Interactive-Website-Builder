@@ -60,17 +60,13 @@ module.exports = function(mongoose, userModel) {
     }
 
     function removePageFromWebsite(websiteId, pageId) {
-        websiteModel
+        return websiteModel
             .findOne({_id: websiteId})
             .then(
                 function (website) {
                     website.pages.pull(pageId);
                     website.save();
-                },
-                function (error) {
-                    console.log(error);
-                }
-            );
+                });
     }
 
     function deleteWebsite(websiteId) {
@@ -78,7 +74,6 @@ module.exports = function(mongoose, userModel) {
             .findById(websiteId)
             .then(function (website) {
                 var userId = website._user;
-                console.log(userId);
                 return userModel
                     .removeWebsiteFromUser(userId, websiteId)
                     .then(function (user) {

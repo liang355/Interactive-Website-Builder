@@ -4,7 +4,7 @@
 
 (function(){
     var app = angular
-        .module("WebAppMaker", ['ngRoute', 'ngSanitize']);
+        .module("WebAppMaker", ['ngRoute', 'ngSanitize', 'textAngular']);
 
     app.config(['$sceDelegateProvider', function($sceDelegateProvider) {
         $sceDelegateProvider.resourceUrlWhitelist([

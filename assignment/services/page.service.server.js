@@ -1,10 +1,10 @@
 module.exports = function(app, models) {
     var model = models.pageModel;
-    var pages = [
-        { _id: "321", name: "GizPost 1", websiteId: "456", description: "Lorem" },
-        { _id: "432", name: "GizPost 2", websiteId: "456", description: "Lorem" },
-        { _id: "543", name: "GizPost 3", websiteId: "456", description: "Lorem" }
-    ];
+    // var pages = [
+    //     { _id: "321", name: "GizPost 1", websiteId: "456", description: "Lorem" },
+    //     { _id: "432", name: "GizPost 2", websiteId: "456", description: "Lorem" },
+    //     { _id: "543", name: "GizPost 3", websiteId: "456", description: "Lorem" }
+    // ];
 
     //POST Calls
     app.post('/api/website/:websiteId/page',createPage);
@@ -37,15 +37,23 @@ module.exports = function(app, models) {
     function createPage(req, res) {
         var websiteId = req.params.websiteId;
         var page = req.body;
+        
+        model
+            .createPage(websiteId, page)
+            .then(function (page) {
+                res.send(page);
+            }, function (error) {
+                console.log(error);
+            });
 
-        var newPage = {
-            _id: getNextID(),
-            name: page.name,
-            websiteId: websiteId,
-            description: page.description
-        };
-        pages.push(newPage);
-        res.send(newPage);
+        // var newPage = {
+        //     _id: getNextID(),
+        //     name: page.name,
+        //     websiteId: websiteId,
+        //     description: page.description
+        // };
+        // pages.push(newPage);
+        // res.send(newPage);
     }
 
     function findPagesByWebsiteId(req, res) {
@@ -65,36 +73,63 @@ module.exports = function(app, models) {
 
     function findPageById(req, res) {
         var pageId = req.params.pageId;
-        var result = pages.find(function (page) {
-            return page._id === pageId;
-        });
-        res.send(result);
+        model
+            .findPageById(pageId)
+            .then(function (page) {
+                res.send(page);
+            }, function (erorr) {
+                console.log(error)
+            })
+        // var result = pages.find(function (page) {
+        //     return page._id === pageId;
+        // });
+        // res.send(result);
     }
 
     function updatePage(req, res) {
         var pageId = req.params.pageId;
         var newPage = req.body;
-        console.log(newPage);
-        for(var i = 0; i < pages.length; i ++) {
-            if (pages[i]._id === pageId) {
-                pages[i].name = newPage.name;
-                pages[i].description = newPage.description;
-                res.sendStatus(200);
-                return;
-            }
-        }
-        res.sendStatus(404);
+        model
+            .updatePage(pageId, newPage)
+            .then(function (page) {
+                res.send(page)
+            }, function (error) {
+                res.sendStatus(500).send(error);
+            })
+        // console.log(newPage);
+        // for(var i = 0; i < pages.length; i ++) {
+        //     if (pages[i]._id === pageId) {
+        //         pages[i].name = newPage.name;
+        //         pages[i].description = newPage.description;
+        //         res.sendStatus(200);
+        //         return;
+        //     }
+        // }
+        // res.sendStatus(404);
     }
 
     function deletePage(req, res) {
         var pageId = req.params.pageId;
-        for(var i = 0; i < pages.length; i ++) {
-            if (pages[i]._id === pageId) {
-                pages.splice(i,1);
-                res.sendStatus(200);
-                return;
-            }
+        if(pageId) {
+            model
+                .deletePage(pageId)
+                .then(function (status){
+                    res.sendStatus(200).send(status);
+                    }, function (error){
+                    console.log(error);
+                    res.sendStatus(400).send(error);}
+                );
+        } else {
+            res.sendStatus(412);
         }
-        res.sendStatus(404);
+
+        // for(var i = 0; i < pages.length; i ++) {
+        //     if (pages[i]._id === pageId) {
+        //         pages.splice(i,1);
+        //         res.sendStatus(200);
+        //         return;
+        //     }
+        // }
+        // res.sendStatus(404);
     }
 };

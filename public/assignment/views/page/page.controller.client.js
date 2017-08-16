@@ -65,6 +65,7 @@
             };
             PageService.updatePage(vm.pid, newPage)
                 .then(function (response) {
+                    console.log(response);
                     $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/");
                 }, function (error) {
                     console.log(error);

@@ -11,6 +11,12 @@
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
+
+        function trustThisContent(html) {
+            //diligence to scrub any unsafe content
+            return $sce.trustAsHtml(html);
+        }
+
         WidgetService.findWidgetsByPageId(vm.pid)
             .then(function (response) {
                 vm.widgets = response.data;
@@ -32,6 +38,7 @@
         vm.pid = $routeParams.pid;
         vm.widgetType = $routeParams.wtype;
         vm.createError = null;
+        console.log(vm.widgetType);
 
         function createWidget() {
             if (vm.widgetType === 'IMAGE' || vm.widgetType === 'YOUTUBE') {
@@ -50,13 +57,17 @@
                     return;
                 }
             }
+
             var newWidget = {
+                widgetType: vm.widgetType,
                 name: vm.widgetName,
                 text: vm.widgetText,
-                widgetType: vm.widgetType,
                 size: vm.widgetSize,
                 width: vm.widgetWidth,
-                url: vm.widgetUrl
+                url: vm.widgetUrl,
+                rows: vm.widgetRows,
+                placeholder: vm.widgetPlaceholder,
+                formatted: vm.widgetFormatted
             };
             WidgetService.createWidget(vm.pid, newWidget)
                 .then(function (response) {

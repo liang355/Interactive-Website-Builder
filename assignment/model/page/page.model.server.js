@@ -42,7 +42,6 @@ module.exports = function(mongoose, websiteModel){
             _id : pageId
         }, {
             name : page.name,
-            title: page.title,
             description : page.description
         });
     }
@@ -58,27 +57,26 @@ module.exports = function(mongoose, websiteModel){
     }
 
     function removeWidgetFromPage(pageId, widgetId) {
-        pageModel
+        return pageModel
             .findById(pageId)
             .then(
                 function (page) {
                     page.widgets.pull(widgetId);
                     page.save();
-                },
-                function (error) {
-                    console.log(error);
-                }
-            )
+                });
     }
 
     function deletePage(pageId) {
-        var websiteId = pageModel.findOne({_id: pageId})._website;
-
         return pageModel
-            .remove({_id: pageId})
-            .then(function (status) {
+            .findById(pageId)
+            .then(function (page) {
+                var websiteId = page._website;
                 return websiteModel
-                    .removePageFromWebsite(websiteId, pageId);
+                    .removePageFromWebsite(websiteId, pageId)
+                    .then(function (website) {
+                        return pageModel
+                            .remove({_id: pageId});
+                    });
             });
     }
 };

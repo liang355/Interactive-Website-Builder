@@ -44,7 +44,6 @@ module.exports = function(app, models){
         model
             .createWebsiteForUser(userId, website)
             .then(function (user) {
-                console.log(user);
                 res.json(user);
             }, function (error) {
                 console.log(error);
@@ -107,9 +106,6 @@ module.exports = function(app, models){
 
     function deleteWebsite(req, res) {
         var websiteId = req.params.websiteId;
-        console.log(websiteId);
-        console.log("hahaha");
-
         if(websiteId){
             model
                 .deleteWebsite(websiteId)
