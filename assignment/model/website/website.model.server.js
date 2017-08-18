@@ -1,41 +1,42 @@
-module.exports = function(mongoose, userModel) {
-    var websiteSchema = require('./website.schema.server.js')(mongoose);
+/**
+ * Created by stan on 7/21/17.
+ */
+
+module.exports = function (mongoose, userModel) {
+    var websiteSchema = require('./website.schema.server')(mongoose);
     var websiteModel = mongoose.model('websiteModel', websiteSchema);
 
     var api = {
         'createWebsiteForUser' : createWebsiteForUser,
-        'findAllWebsites' : findAllWebsites,
         'findAllWebsitesForUser' : findAllWebsiteForUser,
         'findWebsiteById' : findWebsiteById,
         'updateWebsite' : updateWebsite,
-        'addPageToWebsite' : addPageToWebsite,
         'removePageFromWebsite' : removePageFromWebsite,
-        'deleteWebsite' : deleteWebsite
-     };
-     return api;
+        'deleteWebsite' : deleteWebsite,
+        'findAllWebsites' : findAllWebsites,
+        'addPageToWebsite' : addPageToWebsite
+    };
+
+    return api;
 
     function createWebsiteForUser(userId, website) {
-        website._id = new Date().getTime().toString();
         website._user = userId;
         return websiteModel
             .create(website)
-            .then(function (website) {
-                return userModel
-                    .addWebsiteForUser(userId, website._id);
-            });
-    }
-
-    function findAllWebsites() {
-        return websiteModel.find();
+            .then(
+                function (website) {
+                    return userModel
+                        .addWebsiteForUser(userId, website._id);
+                });
     }
 
     function findAllWebsiteForUser(userId) {
-        return websiteModel
+        return websites = websiteModel
             .find({_user : userId})
             .populate('_user')
             .exec();
     }
-
+    
     function findWebsiteById(websiteId) {
         return websiteModel.findOne({_id: websiteId});
     }
@@ -49,6 +50,22 @@ module.exports = function(mongoose, userModel) {
         });
     }
 
+    function removePageFromWebsite(websiteId, pageId) {
+        websiteModel
+            .findOne({_id: websiteId})
+            .then(
+                function (website) {
+                    var index = website.pages.indexOf(pageId);
+                    website.pages.splice(index, 1);
+                    // website.pages.pull(pageId);
+                    website.save();
+                },
+                function (error) {
+                    console.log(error);
+                }
+            );
+    }
+
     function addPageToWebsite(websiteId, pageId) {
         return websiteModel
             .findOne({_id: websiteId})
@@ -58,28 +75,19 @@ module.exports = function(mongoose, userModel) {
                     return website.save();
                 });
     }
-
-    function removePageFromWebsite(websiteId, pageId) {
+    
+    function deleteWebsite(userId, websiteId) {
         return websiteModel
-            .findOne({_id: websiteId})
+            .remove({_id: websiteId})
             .then(
-                function (website) {
-                    website.pages.pull(pageId);
-                    website.save();
-                });
+                function (status) {
+                    return userModel
+                        .removeWebsiteFromUser(userId, websiteId);
+                }
+            );
     }
-
-    function deleteWebsite(websiteId) {
-        return websiteModel
-            .findById(websiteId)
-            .then(function (website) {
-                var userId = website._user;
-                return userModel
-                    .removeWebsiteFromUser(userId, websiteId)
-                    .then(function (user) {
-                        return websiteModel
-                            .remove({_id: websiteId});
-                    });
-            });
+    
+    function findAllWebsites() {
+        return websiteModel.find();
     }
 };

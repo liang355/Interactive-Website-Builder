@@ -1,3 +1,6 @@
+/**
+ * Created by stan on 6/16/17.
+ */
 (function() {
     angular
         .module("WebAppMaker")
@@ -5,85 +8,123 @@
         .controller("NewWebsiteController", NewWebsiteController)
         .controller("EditWebsiteController", EditWebsiteController);
 
-    function WebsiteListController($routeParams, WebsiteService) {
+    function WebsiteListController($routeParams, loggedin, WebsiteService) {
         var vm = this;
-        vm.uid = $routeParams.uid;
-        WebsiteService.findWebsitesByUser(vm.uid)
-            .then(function (response) {
-                vm.websites = response.data;
-            });
+        // vm.uid = $routeParams.uid;
+        vm.uid = loggedin._id;
+
+        function init () {
+            WebsiteService
+                .findWebsitesByUser(vm.uid)
+                .then(function (website) {
+                    vm.website = website;
+                });
+
+        }
+
+        init();
+
     }
 
-    function NewWebsiteController($location, $routeParams, WebsiteService) {
+    function NewWebsiteController($routeParams, WebsiteService, $location, loggedin) {
         var vm = this;
-        vm.createWebsite = createWebsite;
-        vm.uid = $routeParams.uid;
-        WebsiteService.findWebsitesByUser(vm.uid)
-            .then(function (response) {
-                vm.websites = response.data;
-            });
+        // vm.uid = $routeParams.uid;
+        vm.uid = loggedin._id;
 
-        function createWebsite() {
-            if(vm.name === undefined || vm.name === null || vm.name ==="") {
-                vm.error = "website name cannot be empty";
-                return;
-            }
-            var website = {
-                name: vm.name,
-                description: vm.description
-            };
-            WebsiteService.createWebsite(vm.uid, website)
-                .then(function (response) {
-                    $location.url("/user/" + vm.uid + "/website");
-                }, function (error) {
-                    console.log(error);
+        //event handlers
+        vm.createWebsite = createWebsite;
+
+        function init () {
+            WebsiteService
+                .findWebsitesByUser(vm.uid)
+                .then(function (websites) {
+                    vm.websites = websites;
                 });
         }
+        init();
+
+        //implementation
+        function createWebsite(name, desc) {
+            if(!(name)) {
+                vm.error = "Not a valid website name"
+            } else {
+                var newWebsite = {
+                    name: name,
+                    description: desc
+                };
+                WebsiteService
+                    .createWebsite(vm.uid, newWebsite)
+                    .then(
+                        function (response) {
+                            // $location.url("/user/" + vm.uid + "/website");
+                            $location.url("/website");
+                        },
+                        function (error) {
+                            vm.error = "Unable to create";
+                        }
+                    );
+            }
+        }
+
     }
 
-    function EditWebsiteController($location, $routeParams, WebsiteService) {
+    function EditWebsiteController($routeParams, WebsiteService, $location, loggedin) {
         var vm = this;
+        // vm.uid = $routeParams.uid;
+        vm.uid = loggedin._id;
+        vm.wid = $routeParams.wid;
+
+        //event handlers
         vm.updateWebsite = updateWebsite;
         vm.deleteWebsite = deleteWebsite;
-        vm.uid = $routeParams.uid;
-        vm.wid = $routeParams.wid;
-        WebsiteService.findWebsitesByUser(vm.uid)
-            .then(function (response) {
-                vm.websites = response.data;
-            }, function (error) {
-                console.log("findWebsitesByUser() Error" , error);
-            });
-        WebsiteService.findWebsiteById(vm.wid)
-            .then(function (response) {
-                vm.website = response.data;
-                vm.websiteName = vm.website.name;
-                vm.websiteDescription = vm.website.description;
-            });
 
-        function updateWebsite() {
-            if(vm.websiteName === undefined || vm.websiteName === null || vm.websiteName ==="") {
-                vm.error = "website name cannot be empty";
-                return;
-            }
-            var newWebsite = {
-                name: vm.websiteName,
-                description: vm.websiteDescription
-            };
-            WebsiteService.updateWebsite(vm.wid, newWebsite)
-                .then(function (response) {
-                    $location.url("/user/" + vm.uid + "/website/");
-                }, function (error) {
-                    console.log(error);
+        function init () {
+            WebsiteService
+                .findWebsitesByUser(vm.uid)
+                .then(function (websites) {
+                    vm.websites = websites;
                 });
         }
+        init();
 
-        function deleteWebsite() {
-            WebsiteService.deleteWebsite(vm.wid)
-                .then(function (response) {
-                    $location.url("/user/" + vm.uid + "/website/");
-                }, function (error) {
-                    console.log(error);
-                });
+        WebsiteService
+            .findWebsiteById(vm.wid)
+            .then(function (website) {
+                vm.website = website;
+            });
+
+
+        //implementation
+        function updateWebsite(website) {
+            if(!website || !website.name) {
+                vm.error = "Website name is required!";
+            } else {
+                WebsiteService
+                    .updateWebsite(vm.wid, website)
+                    .then(
+                        function (response) {
+                            // $location.url('/user/' + vm.uid + '/website');
+                            $location.url('/website');
+                        },
+                        function (error) {
+                            vm.error = "Cannot update the website!";
+                        }
+                    );
+            }
+
+        }
+
+        function deleteWebsite(websiteId) {
+            WebsiteService
+                .deleteWebsite(vm.uid, websiteId)
+                .then(
+                    function (response) {
+                        $location.url('/website');
+                    },
+                    function (error) {
+                        vm.error = "Unable to delete!";
+                    }
+                );
         }
     }
 

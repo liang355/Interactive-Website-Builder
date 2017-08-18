@@ -1,36 +1,36 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-fixed-top cl-blue-navbar">
     <div class="row container-fluid">
-        <div class="hidden-xs col-sm-4">
-            <div class="navbar-text pull-left" id="left-chevron">
-                <a href="#!/user/{{model.uid}}/website">
+        <div class="col-sm-4 hidden-xs">
+            <div class="navbar-text pull-left" style="margin-left: 0px;">
+                <a class="cl-text-white" href="#!/website">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
-            <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="">
+            <div class="navbar-header">
+                <a class="cl-text-white navbar-brand cl-text-bold">
                     Websites
                 </a>
             </div>
-            <div class="navbar-text pull-right" id="plus-sign">
-                <a href="#!/user/{{model.uid}}/website/new">
+            <div class="navbar-text pull-right" style="margin-right: 15px;">
+                <a class="cl-text-white" href="#!/website/new" >
                     <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-8">
-            <div class="navbar-text pull-left visible-xs" id="hidden-left-chevron">
-                <a href="#!/user/{{model.uid}}/website">
+        <div class="col-sm-8">
+            <div class="navbar-text pull-left hidden-lg hidden-md hidden-sm" style="margin-left: 0px;">
+                <a class="cl-text-white" href="#!/website">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
-            <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="">
-                    New Website
+            <div class="navbar-text pull-right" style="margin-right: 0px;">
+                <a class="cl-text-white" ng-click="model.createWebsite(model.name, model.description)">
+                    <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
-            <div class="navbar-text pull-right">
-                <a ng-click="model.createWebsite(model.name, model.description)">
-                    <span class="glyphicon glyphicon-ok"></span>
+            <div class="navbar-header">
+                <a class="cl-text-white navbar-brand cl-text-bold">
+                    New Website
                 </a>
             </div>
         </div>
@@ -38,40 +38,50 @@
 </nav>
 
 <div class="row container-fluid">
-    <div class="hidden-xs col-sm-4" id="websiteListArea">
-        <ul class="list-group">
-            <li ng-repeat="website in model.websites" class="list-group-item">
-                <a href="#!/user/{{website.developerId}}/website/{{website._id}}/page">{{website.name}}</a>
-                <a href="#!/user/{{website.developerId}}/website/{{website._id}}">
+    <div class="col-sm-4 hidden-xs"
+         style="overflow-y: scroll;top: 0px;bottom: 0px;position: absolute;left: 0px;margin-top: 50px;padding-top: 15px;margin-bottom: 50px;">
+        <ul class="list-group cl-list-item-borderless">
+            <li ng-repeat="website in model.websites" class="list-group-item cl-list-item-borderless">
+                <a href="#!/website/{{website._id}}">
                     <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+                <a href="#!/website/{{website._id}}/page">
+                    {{website.name}}
                 </a>
             </li>
         </ul>
     </div>
 
     <div class="col-xs-12 col-sm-8 pull-right">
-        <div ng-show="model.error" class="alert alert-danger" role="alert">{{model.error}}</div>
         <form>
-            <div class="form-group">
-                <label for="textInput">Name</label>
-                <input ng-model="model.name" type="text" id="textInput" class="form-control" placeholder="Name">
+            <div ng-show="model.error" class="alert alert-danger" role="alert">
+                {{model.error}}
             </div>
             <div class="form-group">
-                <label for="textArea">Description</label>
-                <textarea ng-model="model.description" id="textArea" class="form-control" rows="6" placeholder="Description"></textarea>
+                <label for="name">Name</label>
+                <input class="form-control"
+                       placeholder="Name"
+                       ng-model="model.name"
+                       id="name"/>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control"
+                          rows="5"
+                          placeholder="Description"
+                          ng-model="model.description"
+                          id="description">
+                </textarea>
             </div>
         </form>
     </div>
 </div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
+
+<nav class="navbar navbar-fixed-bottom cl-blue-navbar">
     <div class="container-fluid">
-        <div class="navbar-text row" id="bottom-navbar-row">
-            <div class="col-xs-12">
-                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
-                    <span class="glyphicon glyphicon-user"></span>
-                </a>
-            </div>
-        </div>
+        <a href="#!/profile" class="navbar-link navbar-text pull-right cl-text-white cl-icon-padding">
+            <span class="glyphicon glyphicon-user"></span>
+        </a>
     </div>
 </nav>

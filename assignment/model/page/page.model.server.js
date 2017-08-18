@@ -1,5 +1,9 @@
-module.exports = function(mongoose, websiteModel){
-    var pageSchema = require('./page.schema.server.js')(mongoose);
+/**
+ * Created by stan on 7/24/17.
+ */
+
+module.exports = function (mongoose, websiteModel) {
+    var pageSchema = require('./page.schema.server')(mongoose);
     var pageModel = mongoose.model('pageModel', pageSchema);
 
     var api = {
@@ -7,15 +11,14 @@ module.exports = function(mongoose, websiteModel){
         'findAllPagesForWebsite' : findAllPagesForWebsite,
         'findPageById' : findPageById,
         'updatePage' : updatePage,
-        'addWidgetToPage' : addWidgetToPage,
+        'deletePage' : deletePage,
         'removeWidgetFromPage' : removeWidgetFromPage,
-        'deletePage' : deletePage
+        'addWidgetToPage' : addWidgetToPage
     };
-
+    
     return api;
-
+    
     function createPage(websiteId, page) {
-        page._id = new Date().getTime().toString();
         page._website = websiteId;
         return pageModel
             .create(page)
@@ -27,7 +30,7 @@ module.exports = function(mongoose, websiteModel){
     }
 
     function findAllPagesForWebsite(websiteId) {
-        return pageModel
+        return pages = pageModel
             .find({_website : websiteId})
             .populate('_website')
             .exec();
@@ -42,10 +45,36 @@ module.exports = function(mongoose, websiteModel){
             _id : pageId
         }, {
             name : page.name,
+            title: page.title,
             description : page.description
         });
     }
 
+    function deletePage(websiteId, pageId) {
+
+        return pageModel
+            .remove({_id: pageId})
+            .then(function (status) {
+                return websiteModel
+                    .removePageFromWebsite(websiteId, pageId);
+            });
+    }
+    
+    function removeWidgetFromPage(pageId, widgetId) {
+        pageModel
+            .findById(pageId)
+            .then(
+                function (page) {
+                    var index = page.widgets.indexOf(widgetId);
+                    page.widgets.splice(index, 1);
+                    page.save();
+                },
+                function (error) {
+                    console.log(error);
+                }
+            )
+    }
+    
     function addWidgetToPage(pageId, widgetId) {
         return pageModel
             .findOne({_id: pageId})
@@ -54,29 +83,5 @@ module.exports = function(mongoose, websiteModel){
                     page.widgets.push(widgetId);
                     return page.save();
                 });
-    }
-
-    function removeWidgetFromPage(pageId, widgetId) {
-        return pageModel
-            .findById(pageId)
-            .then(
-                function (page) {
-                    page.widgets.pull(widgetId);
-                    page.save();
-                });
-    }
-
-    function deletePage(pageId) {
-        return pageModel
-            .findById(pageId)
-            .then(function (page) {
-                var websiteId = page._website;
-                return websiteModel
-                    .removePageFromWebsite(websiteId, pageId)
-                    .then(function (website) {
-                        return pageModel
-                            .remove({_id: pageId});
-                    });
-            });
     }
 };

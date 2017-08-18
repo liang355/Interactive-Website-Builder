@@ -1,61 +1,62 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-sm-12">
-            <div class="navbar-text pull-left" id="left-chevron">
-                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-            </div>
-            <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="">
-                    Widgets
-                </a>
-            </div>
-            <div class="navbar-text pull-right" id="plus-sign">
-                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/new">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
-            </div>
+    <div class="container-fluid">
+        <div class="navbar-text pull-left" style="margin-left: 0px;">
+            <a class="navbar-link" href="#!/website/{{model.wid}}/page">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
         </div>
+        <a class="cl-text-white navbar-brand cl-text-bold">
+            Widgets
+        </a>
+        <a href="#!/website/{{model.wid}}/page/{{model.pid}}/widget/new"
+           class="navbar-link navbar-text pull-right cl-text-white cl-icon-padding">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
     </div>
 </nav>
 
-<div class="row container-fluid">
-    <div class="col-xs-12 col-sm-12" id="websiteListArea">
-        <ul sortable pid="model.pid" class="list-group">
-            <li ng-repeat="widget in model.widgets" class="list-group-item" style="position: relative">
-                <!--{{widget.widgetType}}-->
-                <!--<ng-include src="'views/widget/include.html'"></ng-include>-->
-                <div ng-switch="widget.widgetType">
-                    <div ng-switch-when="HEADING">
-                        <div ng-include="'views/widget/heading/widget-heading.view.client.html'"></div>
-                    </div>
-                    <div ng-switch-when="IMAGE">
-                        <div ng-include="'views/widget/image/widget-image.view.client.html'"></div>
-                    </div>
-                    <div ng-switch-when="YOUTUBE">
-                        <div ng-include="'views/widget/youtube/widget-youtube.view.client.html'"></div>
-                    </div>
-                    <div ng-switch-when="HTML">
-                        <div ng-include="'views/widget/html/widget-html.view.client.html'"></div>
-                    </div>
-                    <div ng-switch-when="TEXT">
-                        <div ng-include="'views/widget/text/widget-text.view.client.html'"></div>
-                    </div>
-                </div>
-            </li>
-        </ul>
+<div sortable pid="model.pid" class="container-fluid">
+    <div ng-repeat="widget in model.widget" class="wd-widget">
+        <div class="wd-widget-toolbar">
+            <a href="#!/website/{{model.wid}}/page/{{model.pid}}/widget/{{widget._id}}">
+                <span class="glyphicon glyphicon-cog"></span>
+            </a>
+            <span class="glyphicon glyphicon-align-justify"></span>
+        </div>
+
+        <div ng-switch="widget.widgetType">
+            <div ng-switch-when="HEADING">
+                <div ng-include="'views/widget/widget-heading.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="IMAGE">
+                <div ng-include="'views/widget/widget-image.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="YOUTUBE" class="youtube-widget">
+                <div ng-include="'views/widget/widget-youtube.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="HTML">
+                <div ng-include="'views/widget/widget-html.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="TEXT">
+                <div ng-include="'views/widget/widget-text.view.client.html'"></div>
+            </div>
+        </div>
     </div>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container-fluid">
-        <div class="navbar-text row" id="bottom-navbar-row">
-            <div class="col-xs-12">
-                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
-                    <span class="glyphicon glyphicon-user"></span>
-                </a>
-            </div>
-        </div>
+        <a class="navbar-link navbar-text pull-left cl-text-white cl-icon-padding">
+            <span class="glyphicon glyphicon-play"></span>
+        </a>
+
+        <a class="navbar-link navbar-text pull-left cl-text-white cl-icon-padding">
+            <span class="glyphicon glyphicon-eye-open"></span>
+        </a>
+
+        <a href="#!/profile" class="navbar-link navbar-text pull-right cl-icon-padding">
+            <span class="cl-text-blue glyphicon glyphicon-user">
+            </span>
+        </a>
     </div>
 </nav>

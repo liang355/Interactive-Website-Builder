@@ -1,3 +1,7 @@
+/**
+ * Created by stan on 7/20/17.
+ */
+
 module.exports = function(mongoose){
     var userSchema = require('./user.schema.server.js')(mongoose);
     var userModel = mongoose.model('userModel', userSchema);
@@ -11,40 +15,52 @@ module.exports = function(mongoose){
         'updateUser' : updateUser,
         'removeWebsiteFromUser' : removeWebsiteFromUser,
         'addWebsiteForUser' : addWebsiteForUser,
-        'deleteUser' : deleteUser
+        'deleteUser' : deleteUser,
+        'updateUserPassword': updateUserPassword,
+        'findUserByGoogleId': findUserByGoogleId
     };
 
     return api;
 
+    //helper functions
+    function updateUserPassword(userId, user){
+        return userModel.update({
+            _id : userId
+        }, {
+            password: user.password
+        });
+    }
+
+
     // Function Definition Section
 
     function createUser(user){
-        console.log("create user!");
-        var newUser = {
-            _id: new Date().getTime().toString(),
-            username : user.username,
-            password : user.password,
-            websites : []
-        };
-
-        if(user.firstName){
-            newUser.firstName = user.firstName;
-        }
-        if(user.lastName){
-            newUser.lastName = user.lastName;
-        }
-        if(user.email){
-            newUser.email = user.email;
-        }
-        return userModel.create(newUser);
-    }
-
-    function findAllUser() {
-        return userModel.find();
+        user.websites = [];
+        return userModel.create(user);
+        // var newUser = {
+        //     username : user.username,
+        //     password : user.password,
+        //     websites : []
+        // };
+        //
+        // if(user.firstName){
+        //     newUser.firstName = user.firstName;
+        // }
+        // if(user.lastName){
+        //     newUser.lastName = user.lastName;
+        // }
+        // if(user.email){
+        //     newUser.email = user.email;
+        // }
+        // if(user.phone){
+        //     newUser.phone = user.phone;
+        // }
+        //
+        // return userModel.create(newUser);
     }
 
     function findUserById(userId){
-        return userModel.findById({_id: userId});
+        return userModel.findOne({_id: userId});
     }
 
     function findUserByUsername(uname){
@@ -65,29 +81,47 @@ module.exports = function(mongoose){
         }, {
             firstName : user.firstName,
             lastName : user.lastName,
-            email : user.email
+            email : user.email,
+            phone : user.phone
         });
     }
 
     function removeWebsiteFromUser(userId, websiteId){
-        return userModel
-            .findById(userId)
+        // db.user.update({_id : ObjectId("583cf3287ac013080c4adee5")}, {$push : { "websites" : ObjectId("583cf43693b914082152cc3c")}})
+        userModel
+            .findOne({_id: userId})
             .then(
                 function(user){
-                    user.websites.pull(websiteId);
+                    var index = user.websites.indexOf(websiteId);
+                    user.websites.splice(index, 1);
                     return user.save();
-                });
+                    // user.websites.pull(websiteId);
+                    // user.save();
+                },
+                function(error){
+                    console.log(error);
+                }
+            );
     }
 
+    function findAllUser() {
+        return userModel.find();
+    }
+    
     function addWebsiteForUser(userId, websiteId) {
+        // console.log("added!");
         return userModel
             .findOne({_id: userId})
             .then(function (user) {
-                user.websites.push(websiteId);
-                return user.save();
-            });
+                    user.websites.push(websiteId);
+                    return user.save();
+                });
     }
-
+    
+    function findUserByGoogleId(googleId) {
+        return userModel.findOne({'google.id': googleId});
+    }
+    
     function deleteUser(userId){
         return userModel.remove({
             _id : userId

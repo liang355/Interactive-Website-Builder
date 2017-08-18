@@ -1,15 +1,7 @@
 /**
- * Created by yingbinliang on 7/19/17.
+ * Created by stan on 6/14/17.
  */
-
 (function(){
-    var app = angular
-        .module("WebAppMaker", ['ngRoute', 'ngSanitize', 'textAngular']);
-
-    app.config(['$sceDelegateProvider', function($sceDelegateProvider) {
-        $sceDelegateProvider.resourceUrlWhitelist([
-            'self',
-            'https://www.youtube.com/**'
-        ]);
-    }]);
+    angular.module("WebAppMaker", ['ngRoute', 'textAngular']);
 })();
+

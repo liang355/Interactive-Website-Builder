@@ -1,3 +1,6 @@
+/**
+ * Created by stan on 6/16/17.
+ */
 (function() {
     angular
         .module("WebAppMaker")
@@ -5,35 +8,32 @@
         .controller("RegisterController", RegisterController)
         .controller("ProfileController", ProfileController);
 
-    function LoginController($timeout, $location, UserService) {
+    function LoginController($location, UserService) {
         var vm = this;
         vm.login = login;
 
         function login(username, password) {
-            UserService.findUserByCredentials(username, password)
-                .then(function(response){
-                    var user = response.data;
-                    if (user === null || user === undefined || user === "") {
-                        vm.error = "No Such User";
-                    } else {
-                        $location.url("/user/" + user._id);
+            UserService
+                // .findUserByCredentials(username, password)
+                .login(username, password)
+                .then(
+                    function (user) {
+                        $location.url('/profile');
+                    },
+                    function (error) {
+                        vm.error = "Username does not exist";
                     }
-                },function(error){
-                    console.log(error);
-                    vm.error = "Error Connecting to Server. Please try again later.";
-                    $timeout(function () {
-                        vm.error = null;
-                    }, 5000);
-                });
+                )
         }
     }
 
-    function RegisterController($location, $timeout, UserService) {
+    function RegisterController($location, $timeout,UserService) {
         var vm = this;
         vm.register = register;
 
         function register(username, password, vpassword) {
-            if (username === undefined || username === null || username === "" || password === undefined || password === "") {
+            if (username === undefined || username === null || username === ""
+                || password === undefined || password === "") {
                 vm.error = "Username and Passwords cannot be empty.";
                 return;
             }
@@ -41,66 +41,87 @@
                 vm.error = "Password does not match.";
                 return;
             }
-            UserService.findUserByUsername(username)
-                .then(function (response) {
-                    var user = response.data;
-                    if (user === null || user === "" || user === undefined) {
-                        user = {
-                            username: username,
-                            password: password,
-                            firstName: "",
-                            lastName: "",
-                            email: ""
-                        };
-                        UserService.createUser(user)
-                            .then(function (response) {
-                                var user = response.data;
-                                $location.url("/user/" + user._id);
-                            }, function (error) {
-                                console.log(error);
-                            });
+
+            UserService
+                .findUserByUsername(username)
+                .then(
+                    function (user) {
+                        if (user != null) {
+                            vm.error = "Username already exist.";
+                            $timeout(function () {
+                                vm.error = null;
+                            }, 3000);
+                            return;
+                        } else {
+                            var user = {
+                                username: username,
+                                password: password,
+                                firstName: "",
+                                lastName: "",
+                                email: ""
+                            };
+                            return UserService
+                                .register(user);
+                        }
                     }
-                    else {
-                        vm.error = "Username already exists.";
-                        $timeout(function () {
-                            vm.error = null;
-                        }, 3000);
+                )
+                .then(
+                    function () {
+                        $location.url("/profile");
                     }
-                });
+                )
         }
     }
 
-    function ProfileController($routeParams, $timeout, UserService) {
+    function ProfileController($routeParams, $location, $timeout, UserService, loggedin) {
         var vm = this;
+        // vm.userId = $routeParams.uid;
+        vm.userId = $routeParams._id;
+        vm.user = loggedin;
+
         vm.updateUser = updateUser;
+        vm.deleteUser = deleteUser;
+        vm.logout = logout;
 
-        UserService.findUserById($routeParams.uid)
-            .then(function (response) {
-                vm.user = response.data;
-                if(vm.user){
-                    vm.username = vm.user.username;
-                    vm.firstName = vm.user.firstName;
-                    vm.lastName = vm.user.lastName;
-                    vm.email = vm.user.email;
-                }
-            });
+        // UserService
+        //     .findUserById($routeParams.uid)
+        //     .then(renderUser, userError);
 
-        function updateUser() {
-            var update_user = {
-                _id: $routeParams.uid,
-                firstName: vm.firstName,
-                lastName: vm.lastName,
-                email: vm.email
-            };
-            UserService.updateUser($routeParams.uid, update_user)
-                .then(function (response) {
-                    vm.updated = "Profile changes saved!";
+        function updateUser(user) {
+            UserService
+                .updateUser(user._id, user)
+                .then(function () {
+                    vm.message = "Profile changes saved!";
                     $timeout(function () {
-                        vm.updated = null;
+                        vm.updated =null;
                     }, 3000);
-                }, function (error) {
-                    console.log(error);
                 });
         }
+
+        function userError (error) {
+            vm.error = "User not found";
+        }
+
+        function deleteUser(user) {
+            UserService
+                .deleteUser(user._id)
+                .then(function () {
+                    $location.url('/login');
+                }, function () {
+                    vm.error = "Unable to remove this user.";
+                    $timeout(function () {
+                        vm.error = null;
+                    }, 3000);
+                })
+        }
+
+        function logout() {
+            UserService
+                .logout()
+                .then(function () {
+                    $location.url('/login');
+                })
+        }        
+        
     }
 })();

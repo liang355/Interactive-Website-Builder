@@ -1,122 +1,106 @@
+/**
+ * Created by stan on 6/16/17.
+ */
 (function () {
-   angular
-       .module("WebAppMaker")
-       .factory("UserService", userService);
+    angular
+        .module("WebAppMaker")
+        .factory('UserService', UserService);
 
-   function userService($http) {
-       var services = {
-           "createUser": createUser,
-           "findUserById": findUserById,
-           "findAllUser": findAllUser,
-           "findUserByUsername": findUserByUsername,
-           "findUserByCredentials": findUserByCredentials,
-           "updateUser": updateUser,
-           "deleteUser": deleteUser
-       };
-       return services;
+    function UserService($http) {
 
-       function createUser(user) {
-           var url = "/api/user";
-           return $http.post(url, user);
-       }
+        var services = {
+            // "createUser": createUser,
+            "findAllUsers": findAllUsers,
+            "findUserById": findUserById,
+            "findUserByUsername": findUserByUsername,
+            "findUserByCredentials": findUserByCredentials,
+            "updateUser": updateUser,
+            "deleteUser": deleteUser,
+            "login": login,
+            "logout": logout,
+            "register": register,
+            "setCurrentUser": setCurrentUser
+        };
+        return services;
 
-       function findUserById(userId) {
-           var url = "/api/user/" + userId;
-           return $http.get(url);
-       }
+        function login(username, password) {
+            var url = "/api/login";
+            var credentials = {
+                username: username,
+                password: password
+            };
+            return $http.post(url, credentials)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+        
+        function logout() {
+            var url = "/api/logout";
+            return $http.post(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+        
+        function register(user) {
+            var url = "/api/register";
+            return $http.post(url, user)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
 
-       function findAllUser() {
-           var url = "/api/user/";
-           return $http.get(url);
-       }
+        function setCurrentUser() {
+            $rootScope.currentUser = user;
+        }
 
-       function findUserByUsername(username) {
-           var url = "/api/user?"+"username="+username;
-           return $http.get(url);
-       }
+        function findAllUsers() {
+            var url = "/api/alluser";
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
 
-       function findUserByCredentials(username, password) {
-           var url = "/api/user?" + "username="+username + "&" + "password="+password;
-           return $http.get(url);
-       }
+        function findUserById(userId) {
+            var url = "/api/user/" + userId;
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
 
-       function updateUser(userId, user) {
-           var url = "/api/user/" + userId;
-           return $http.put(url, user);
-       }
+        function findUserByUsername(username) {
+            var url = "/api/user?username=" + username;
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
 
-       function deleteUser(userId) {
-           var url = "/api/user/" + userId;
-           return $http.delete(url);
-       }
+        function findUserByCredentials(username, password) {
+            var url = "/api/user?username=" + username + "&password=" + password;
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
 
-       // function getNextId() {
-       //     function getMaxId(maxId, currentId) {
-       //         var current = parseInt(currentId._id);
-       //         if (maxId > current) {
-       //             return maxId;
-       //         } else {
-       //             return current + 1;
-       //         }
-       //     }
-       //     return users.reduce(getMaxId, 0).toString();
-       // }
-       //
-       // function createUser(user) {
-       //     var newUserId = getNextId();
-       //     var newUser = {
-       //         _id: newUserId,
-       //         username: user.username,
-       //         password: user.password,
-       //         firstName: user.firstName,
-       //         lastName: user.lastName,
-       //         email: user.email
-       //     };
-       //     users.push(newUser);
-       // }
-       //
-       // function findUserById(userId) {
-       //     for (var i = 0; i < users.length; i++) {
-       //         var user = users[i];
-       //         if(parseInt(user._id) === parseInt(userId)){
-       //             return user;
-       //         }
-       //     }
-       //     return null;
-       // }
-       //
-       // function findUserByUsername(username) {
-       //     for (var i = 0; i < users.length; i++) {
-       //         var user = users[i];
-       //         if(user.username === username){
-       //             return user;
-       //         }
-       //     }
-       //     return null;
-       // }
-       //
-       // function findUserByCredentials(username, password) {
-       //     for (var i = 0; i < users.length; i++) {
-       //         var user = users[i];
-       //         if((user.username === username) && (user.password === password)){
-       //             return user;
-       //         }
-       //     }
-       //     return null;
-       // }
-       //
-       // function updateUser(userId, user) {
-       //     var oldUser = findUserById(userId);
-       //     var index = users.indexOf(oldUser);
-       //     users[index].firstName = user.firstName;
-       //     users[index].lastName = user.lastName;
-       //     users[index].email = user.email;
-       // }
-       //
-       // function deleteUser(userId) {
-       //     var oldUser = findUserById(userId);
-       //     var index = users.indexOf(oldUser);
-       //     users.splice(index, 1);
-       // }
-   }
+        function updateUser(userId, user) {
+            var url = "/api/user/" + userId;
+            return $http.put(url, user)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function deleteUser(userId) {
+            var url = "/api/user/" + userId;
+            return $http.delete(url)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+    }
 })();

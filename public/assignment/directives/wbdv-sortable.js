@@ -1,7 +1,8 @@
+/**
+ * Created by stan on 7/13/17.
+ */
 (function () {
-    angular
-        .module('WebAppMaker')
-        .directive('sortable', sortable);
+    angular.module('WebAppMaker').directive('sortable', sortable);
 
     function sortable($http) {
         function linker(scope, element, attributes) {
@@ -12,22 +13,22 @@
             var start = -1;
             var end = -1;
             $(element).sortable({
-                start: function (event, ui) {
-                    start = $(ui.item).index();
-                    console.log("start: " + start);
-                },
-                stop: function (event, ui) {
-                    end = $(ui.item).index();
-                    scope.callback = {
-                        start: start,
-                        end: end
-                    };
-                    console.log("end: " + end);
+                    start: function (event, ui) {
+                        start = $(ui.item).index();
+                        console.log("start: " + start);
+                    },
+                    stop: function (event, ui) {
+                        end = $(ui.item).index();
+                        scope.callback = {
+                            start: start,
+                            end: end
+                        };
+                        console.log("end: " + end);
 
-                    var url = '/api/page/' + pageId + '/widget?start=' + start + '&end=' + end;
-                    $http.put(url);
-                }
-            });
+                        var url = '/api/page/' + pageId + '/widget?start=' + start + '&end=' + end;
+                        $http.put(url);
+                    }
+                });
         }
 
         return {

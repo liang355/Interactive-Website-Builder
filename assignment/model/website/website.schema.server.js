@@ -1,21 +1,24 @@
+/**
+ * Created by stan on 7/21/17.
+ */
+
 module.exports = function (mongoose) {
-    var pageSchema = require("../page/page.schema.server.js")(mongoose);
+    // var pageSchema = require("../page/page.schema.server")(mongoose);
     var Schema = mongoose.Schema;
 
-    var websiteSchema = new Schema({
-        _id: String,
-        _user : {type : String, ref : 'userModel'},
-        name : {type : String, required : true},
-        description : String,
+    var websiteSchema = mongoose.Schema({
+        _user: {type: mongoose.Schema.Types.ObjectId, ref: "userModel"},
+        name: String,
+        description: String,
         pages : [{
-            type : String,
-            ref : 'pageModel'
+            type: Schema.Types.ObjectId,
+            ref: 'pageModel'
         }],
-        dateCreated : {
-            type : Date,
+        dateCreated: {
+            type: Date,
             default: Date.now
         }
-    }, {collection : 'website'});
+    },{collection: 'website'});
 
     return websiteSchema;
 };

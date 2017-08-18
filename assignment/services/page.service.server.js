@@ -1,135 +1,114 @@
-module.exports = function(app, models) {
+/**
+ * Created by stan on 6/30/17.
+ */
+
+module.exports = function (app, models) {
+
     var model = models.pageModel;
-    // var pages = [
-    //     { _id: "321", name: "GizPost 1", websiteId: "456", description: "Lorem" },
-    //     { _id: "432", name: "GizPost 2", websiteId: "456", description: "Lorem" },
-    //     { _id: "543", name: "GizPost 3", websiteId: "456", description: "Lorem" }
-    // ];
 
     //POST Calls
     app.post('/api/website/:websiteId/page',createPage);
 
     //GET Calls
-    app.get('/api/website/:websiteId/page',findPagesByWebsiteId);
-
+    app.get('/api/website/:websiteId/page',findAllPagesForWebsite);
     app.get('/api/page/:pageId',findPageById);
 
     //PUT Calls
     app.put('/api/page/:pageId',updatePage);
 
     //DELETE Calls
-    app.delete('/api/page/:pageId',deletePage);
-
-    //HELPER functions
-    // function getNextID() {
-    //     function getMaxId(maxId, currentId) {
-    //         var current = parseInt(currentId._id);
-    //         if (maxId > current) {
-    //             return maxId;
-    //         } else {
-    //             return current + 1;
-    //         }
-    //     }
-    //     return pages.reduce(getMaxId, 0).toString();
-    // }
+    app.delete('/api/website/:websiteId/page/:pageId', deletePage);
 
     /*API calls implementation*/
     function createPage(req, res) {
-        var websiteId = req.params.websiteId;
+        var wid = req.params.websiteId;
         var page = req.body;
-        
+
         model
-            .createPage(websiteId, page)
+            .createPage(wid, page)
             .then(function (page) {
-                res.send(page);
-            }, function (error) {
-                console.log(error);
+                res.json(page);
             });
 
-        // var newPage = {
-        //     _id: getNextID(),
-        //     name: page.name,
-        //     websiteId: websiteId,
-        //     description: page.description
-        // };
-        // pages.push(newPage);
-        // res.send(newPage);
     }
 
-    function findPagesByWebsiteId(req, res) {
-        var websiteId = req.params.websiteId;
+    function findAllPagesForWebsite(req, res) {
+        var wid = req.params.websiteId;
+
         model
-            .findAllPagesForWebsite(websiteId)
-            .then(function (pages) {
-                res.send(pages);
-            }, function (error) {
-                res.sendStatus(500).send(error);
-            })
-        // var results = pages.filter(function (page) {
-        //     return page.websiteId === websiteId
-        // });
-        // res.send(results);
+            .findAllPagesForWebsite(wid)
+            .then(
+                function (pages) {
+                    if(pages) {
+                        res.json(pages);
+                    } else {
+                        pages = null;
+                        res.send(pages);
+                    }
+                },
+                function (error) {
+                    res.sendStatus(400).send(error);
+                }
+            )
+
     }
 
     function findPageById(req, res) {
-        var pageId = req.params.pageId;
+        var pid = req.params.pageId;
+
         model
-            .findPageById(pageId)
-            .then(function (page) {
-                res.send(page);
-            }, function (erorr) {
-                console.log(error)
-            })
-        // var result = pages.find(function (page) {
-        //     return page._id === pageId;
-        // });
-        // res.send(result);
+            .findPageById(pid)
+            .then(
+                function (page) {
+                    if(page) {
+                        res.json(page);
+                    } else {
+                        page = null;
+                        res.send(page);
+                    }
+                },
+                function (error) {
+                    res.sendStatus(400).send(error);
+                }
+            )
+
     }
 
     function updatePage(req, res) {
-        var pageId = req.params.pageId;
-        var newPage = req.body;
+        var page = req.body;
+        var pid = req.params.pageId;
+
         model
-            .updatePage(pageId, newPage)
-            .then(function (page) {
-                res.send(page)
-            }, function (error) {
-                res.sendStatus(500).send(error);
-            })
-        // console.log(newPage);
-        // for(var i = 0; i < pages.length; i ++) {
-        //     if (pages[i]._id === pageId) {
-        //         pages[i].name = newPage.name;
-        //         pages[i].description = newPage.description;
-        //         res.sendStatus(200);
-        //         return;
-        //     }
-        // }
-        // res.sendStatus(404);
+            .updatePage(pid, page)
+            .then(
+                function (page){
+                    res.json(page)
+                },
+                function (error){
+                    res.sendStatus(400).send(error);
+                }
+            );
+
     }
 
     function deletePage(req, res) {
-        var pageId = req.params.pageId;
-        if(pageId) {
+        var wid = req.params.websiteId;
+        var pid = req.params.pageId;
+
+        if(pid){
             model
-                .deletePage(pageId)
-                .then(function (status){
-                    res.sendStatus(200).send(status);
-                    }, function (error){
-                    console.log(error);
-                    res.sendStatus(400).send(error);}
+                .deletePage(wid, pid)
+                .then(
+                    function (status){
+                        res.sendStatus(200);
+                    },
+                    function (error){
+                        res.sendStatus(400).send(error);
+                    }
                 );
-        } else {
+        } else{
+            // Precondition Failed. Precondition is that the user exists.
             res.sendStatus(412);
         }
-
-        // for(var i = 0; i < pages.length; i ++) {
-        //     if (pages[i]._id === pageId) {
-        //         pages.splice(i,1);
-        //         res.sendStatus(200);
-        //         return;
-        //     }
-        // }
-        // res.sendStatus(404);
     }
 };

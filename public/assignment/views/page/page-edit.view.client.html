@@ -1,50 +1,41 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-sm-12">
-            <div class="navbar-text pull-left" id="left-chevron">
-                <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-            </div>
-            <div class="navbar-header pull-left">
-                <a class="navbar-brand" href="">
-                    Edit Page
-                </a>
-            </div>
-            <div class="navbar-text pull-right" id="plus-sign">
-                <a ng-click="model.updatePage()">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </a>
-            </div>
+    <div class="container-fluid">
+        <div class="navbar-text pull-left" style="margin-left: 0px;">
+            <a class="navbar-link" href="#!/website/{{model.wid}}/page">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
         </div>
+        <a class="cl-text-white navbar-brand cl-text-bold">
+            Edit Page
+        </a>
+        <a ng-click="model.updatePage(model.page)"
+           class="navbar-link navbar-text pull-right cl-text-white cl-icon-padding">
+            <span class="glyphicon glyphicon-ok"></span>
+        </a>
     </div>
 </nav>
 
-<div class="row container-fluid">
-    <div class="col-xs-12 col-sm-12">
-        <div ng-show="model.error" class="alert alert-danger" role="alert">{{model.error}}</div>
-        <form>
-            <div class="form-group">
-                <label for="pageName">Name</label>
-                <input ng-model="model.name" type="text" id="pageName" class="form-control" placeholder="Page Name">
-            </div>
-            <div class="form-group">
-                <label for="pageTitle">Title</label>
-                <input ng-model="model.description" type="text" id="pageTitle" class="form-control" placeholder="Page Description">
-            </div>
-            <a ng-click="model.deletePage()" class="btn btn-danger btn-block">Delete</a>
-        </form>
-    </div>
+<div class="container">
+
+    <form class="cl-form-bottom-padding">
+        <label for="name">Name</label>
+        <input class="form-control"
+               ng-model="model.page.name"
+               id="name"/>
+
+        <label for="description">Description</label>
+        <input class="form-control"
+               ng-model="model.page.description"
+               id="description"/>
+    </form>
+    <a ng-click="model.updatePage(model.page)" class="btn btn-success btn-block">Update</a>
+    <a ng-click="model.deletePage(model.pid)" class="btn btn-danger btn-block">Delete</a>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container-fluid">
-        <div class="navbar-text row" id="bottom-navbar-row">
-            <div class="col-xs-12">
-                <a href="#!/user/{{model.uid}}" class="pull-right" id="bottom-user-icon">
-                    <span class="glyphicon glyphicon-user"></span>
-                </a>
-            </div>
-        </div>
+        <a href="#!/profile" class="navbar-link navbar-text pull-right cl-icon-padding">
+            <span class="cl-text-blue glyphicon glyphicon-user"></span>
+        </a>
     </div>
 </nav>
